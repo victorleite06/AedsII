@@ -51,7 +51,7 @@ class Is{
 	public static boolean numInt(String stri){
 		boolean numInt = true;
 		for(int i = 0;i < stri.length();i++){
-			if((!(stri.charAt(i) >= '0' && stri.charAt(i) <= '9' || stri.charAt(i) == '.')) && (stri.charAt(i) >= 'a' && stri.charAt(i) <= 'z')){
+			if((!(stri.charAt(i) >= '0' && stri.charAt(i) <= '9' || stri.charAt(i) == '.')) || (stri.charAt(i) >= 'a' && stri.charAt(i) <= 'z')){
 				numInt = false;
 			}
 		}	
