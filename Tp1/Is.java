@@ -53,7 +53,7 @@ class Is{
 	public static boolean numInt(String stri){
 		boolean numInt = true;
 		for(int i = 0;i < stri.length();i++){
-			if((stri.charAt(i) >= 'a' && stri.charAt(i) <= 'z') || (stri.charAt(i) >= 'A' && stri.charAt(i) <= 'Z')){
+			if(stri.charAt(i) >= 'a' && stri.charAt(i) <= 'z'){
 				numInt = false;
 				i = stri.length();
 			}
@@ -67,8 +67,13 @@ class Is{
 	public static boolean numReal(String stri){
 		boolean numReal = true;
 		for(int i = 0;i < stri.length();i++){
-			if((stri.charAt(i) >= 'a' && stri.charAt(i) <= 'z') || (stri.charAt(i) >= 'A' && stri.charAt(i) <= 'Z')){
+			if(stri.charAt(i) >= 'a' && stri.charAt(i) <= 'z'){
 				numReal = false;
+				i = stri.length();
+			}
+			if(stri.charAt(i) != '.'){
+				numReal = false;
+				i = stri.length();
 			}
 		}
 		return numReal;
