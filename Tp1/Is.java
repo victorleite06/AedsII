@@ -18,36 +18,34 @@ class Is{
 				MyIO.print("NAO ");
 			}
 			if(x3){
-                        	MyIO.print("SIM ");
-                	}else{
-                        	MyIO.print("NAO ");
-                	}
+                MyIO.print("SIM ");
+            }else{
+               	MyIO.print("NAO ");
+            }
 			if(x4){
-                        	MyIO.print("SIM \n");
-                	}else{
-                        	MyIO.print("NAO \n");
-                	}
+               	MyIO.print("SIM \n");
+            }else{
+               	MyIO.print("NAO \n");
+            }
 			str = MyIO.readLine();
 		}
 	}
 	public static boolean soVogais(String stri){
 		boolean soVogais = true;
-		for(int i = 0; i < stri.length();i++){
-			if(stri.charAt(i) != 'e' && stri.charAt(i) != 'a' && stri.charAt(i) != 'i' && stri.charAt(i) != 'o' && stri.charAt(i) != 'u'){
+		for(int i = 0;i < stri.length();i++){
+			if((stri.charAt(i) != 'e' && stri.charAt(i) != 'a' && stri.charAt(i) != 'i' && stri.charAt(i) != 'o' && stri.charAt(i) != 'u') || (stri.charAt(i) >= '0' && stri.charAt(i) <= '9')){
 				soVogais = false;
-				i = stri.length();
 			}
 		}
 		return soVogais;
 	}
 	public static boolean soConsoan(String stri){
 		boolean soConsoan = true;
-		for(int i = 0; i < stri.length();i++){
-                        if((stri.charAt(i) == 'e' || stri.charAt(i) == 'a' || stri.charAt(i) == 'i' || stri.charAt(i) == 'o' || stri.charAt(i) == 'u') || (stri.charAt(i) >= '0' && stri.charAt(i) <= '9')){
-                                soConsoan = false;
-								i = stri.length();
-                        }
-                }
+		for(int i = 0;i < stri.length();i++){
+            if((stri.charAt(i) == 'e' || stri.charAt(i) == 'a' || stri.charAt(i) == 'i' || stri.charAt(i) == 'o' || stri.charAt(i) == 'u') || (stri.charAt(i) >= '0' && stri.charAt(i) <= '9')){
+                soConsoan = false;
+            }
+        }
 		return soConsoan;
 	}
 	public static boolean numInt(String stri){
@@ -55,11 +53,9 @@ class Is{
 		for(int i = 0;i < stri.length();i++){
 			if(stri.charAt(i) >= 'a' && stri.charAt(i) <= 'z'){
 				numInt = false;
-				i = stri.length();
 			}
 			if(stri.charAt(i) == '.'){
 				numInt = false;
-				i = stri.length();
 			}
 		}
 		return numInt;
@@ -69,11 +65,9 @@ class Is{
 		for(int i = 0;i < stri.length();i++){
 			if(stri.charAt(i) >= 'a' && stri.charAt(i) <= 'z'){
 				numReal = false;
-				i = stri.length();
 			}
 			if(stri.charAt(i) != '.'){
 				numReal = false;
-				i = stri.length();
 			}
 		}
 		return numReal;
