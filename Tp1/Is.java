@@ -35,6 +35,7 @@ class Is{
 		for(int i = 0; i < stri.length();i++){
 			if(stri.charAt(i) != 'e' && stri.charAt(i) != 'a' && stri.charAt(i) != 'i' && stri.charAt(i) != 'o' && stri.charAt(i) != 'u'){
 				soVogais = false;
+				i = stri.length();
 			}
 		}
 		return soVogais;
@@ -44,6 +45,7 @@ class Is{
 		for(int i = 0; i < stri.length();i++){
                         if((stri.charAt(i) == 'e' || stri.charAt(i) == 'a' || stri.charAt(i) == 'i' || stri.charAt(i) == 'o' || stri.charAt(i) == 'u') || (stri.charAt(i) >= '0' && stri.charAt(i) <= '9')){
                                 soConsoan = false;
+								i = stri.length();
                         }
                 }
 		return soConsoan;
@@ -51,16 +53,21 @@ class Is{
 	public static boolean numInt(String stri){
 		boolean numInt = true;
 		for(int i = 0;i < stri.length();i++){
-			if((!(stri.charAt(i) >= '0' && stri.charAt(i) <= '9' || stri.charAt(i) == '.')) || (stri.charAt(i) >= 'a' && stri.charAt(i) <= 'z')){
+			if((stri.charAt(i) >= 'a' && stri.charAt(i) <= 'z') || (stri.charAt(i) >= 'A' && stri.charAt(i) <= 'Z')){
 				numInt = false;
+				i = stri.length();
 			}
-		}	
+			if(stri.charAt(i) == '.'){
+				numInt = false;
+				i = stri.length();
+			}
+		}
 		return numInt;
 	}
 	public static boolean numReal(String stri){
 		boolean numReal = true;
 		for(int i = 0;i < stri.length();i++){
-			if((!(stri.charAt(i) >= '0' && stri.charAt(i) <= '9')) && (stri.charAt(i) >= 'a' && stri.charAt(i) <= 'z')){
+			if((stri.charAt(i) >= 'a' && stri.charAt(i) <= 'z') || (stri.charAt(i) >= 'A' && stri.charAt(i) <= 'Z')){
 				numReal = false;
 			}
 		}
