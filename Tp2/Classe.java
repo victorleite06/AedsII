@@ -1,3 +1,7 @@
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.*;
+
 class Musica{
 //Declaração de variáveis 
 //-------------------------------------------------------------
@@ -5,7 +9,7 @@ class Musica{
     private String nome;
     private String key;
     //artist(List)
-    //realease_date(Date)
+    private Date realease_date;
     private double acousticness;
     private double danceability;
     private double energy;
@@ -19,9 +23,9 @@ class Musica{
     private double speechiness;
     private int year;
 //-------------------------------------------------------------
-//Construtor da Classe
+//Construtores da Classe
 //-------------------------------------------------------------
-    public Musica(int id,String nome,String key,double acousticness,double danceability,double energy, int duration_ms,double instrumentalness,double valence,int popularity,float tempo,double liveness,double loudness,double speechiness,int year){
+    public Musica(int id,String nome,String key,double acousticness,double danceability,double energy, int duration_ms,double instrumentalness,double valence,int popularity,float tempo,double liveness,double loudness,double speechiness,int year,String date){
         this.id = id;
         this.nome = nome;
         this.key = key;
@@ -37,7 +41,10 @@ class Musica{
         this.loudness = loudness;
         this.speechiness = speechiness;
         this.year = year;
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        this.realease_date = formato.parse(date);
     }
+    public Musica(){}
 //-------------------------------------------------------------
 //Sets e Gets
 //-------------------------------------------------------------
@@ -130,6 +137,13 @@ class Musica{
     }
     public int getYear(){
         return this.year;
+    }
+    public void setRealease_date(String date){
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        this.realease_date = formato.parse(date);
+    }
+    public Date getRealease_date(){
+        return this.realease_date;
     }
 //-------------------------------------------------------------
 }
