@@ -5,7 +5,7 @@ import java.util.*;
 class Musica{
 //Declaração de variáveis 
 //-------------------------------------------------------------
-    private int id;
+    private String id;
     private String nome;
     private String key;
     //artist(List)
@@ -25,7 +25,7 @@ class Musica{
 //-------------------------------------------------------------
 //Construtores da Classe
 //-------------------------------------------------------------
-    public Musica(int id,String nome,String key,double acousticness,double danceability,double energy, int duration_ms,double instrumentalness,double valence,int popularity,float tempo,double liveness,double loudness,double speechiness,int year,String date){
+    public Musica(String id,String nome,String key,double acousticness,double danceability,double energy, int duration_ms,double instrumentalness,double valence,int popularity,float tempo,double liveness,double loudness,double speechiness,int year,String date){
         this.id = id;
         this.nome = nome;
         this.key = key;
@@ -48,10 +48,10 @@ class Musica{
 //-------------------------------------------------------------
 //Sets e Gets
 //-------------------------------------------------------------
-    public void setId(int id){
+    public void setId(String id){
         this.id = id;
     }
-    public int getId(){
+    public String getId(){
         return this.id;
     }
     public void setNome(String nome){
