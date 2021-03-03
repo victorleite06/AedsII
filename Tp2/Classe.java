@@ -8,7 +8,7 @@ class Musica{
     private String id;
     private String nome;
     private String key;
-    //artist(List)
+    private String artista;
     private Date realease_date;
     private double acousticness;
     private double danceability;
@@ -25,7 +25,7 @@ class Musica{
 //-------------------------------------------------------------
 //Construtores da Classe
 //-------------------------------------------------------------
-    public Musica(String id,String nome,String key,double acousticness,double danceability,double energy, int duration_ms,double instrumentalness,double valence,int popularity,float tempo,double liveness,double loudness,double speechiness,int year,String date){
+    public Musica(String id,String nome,String key,double acousticness,double danceability,double energy, int duration_ms,double instrumentalness,double valence,int popularity,float tempo,double liveness,double loudness,double speechiness,int year,String date,String artista){
         this.id = id;
         this.nome = nome;
         this.key = key;
@@ -43,8 +43,11 @@ class Musica{
         this.year = year;
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
         this.realease_date = formato.parse(date);
+        this.artista = artista;
     }
-    public Musica(){}
+    public Musica(){
+        Musica("","","",0,0,0,0,0,0,0,0,0,0,0,0,"","");
+    }
 //-------------------------------------------------------------
 //Sets e Gets
 //-------------------------------------------------------------
@@ -144,6 +147,12 @@ class Musica{
     }
     public Date getRealease_date(){
         return this.realease_date;
+    }
+    public void setArtista(String artista){
+        this.artista = artista;
+    }
+    public String getArtista(){
+        return this.artista;
     }
 //-------------------------------------------------------------
 }
