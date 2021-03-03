@@ -155,6 +155,30 @@ class Musica{
         return this.artista;
     }
 //-------------------------------------------------------------
+//Clone
+//-------------------------------------------------------------
+    public Musica clone(){
+        Musica mA = new Musica();
+        mA.setAcousticness(this.acousticness);
+        mA.setArtista(this.artista);
+        mA.setDanceability(this.danceability);
+        mA.setDuration_ms(this.duration_ms);
+        mA.setEnergy(this.energy);
+        mA.setId(this.id);
+        mA.setInstrumentalness(this.instrumentalness);
+        mA.setKey(this.key);
+        mA.setLiveness(this.liveness);
+        mA.setLoudness(this.loudness);
+        mA.setNome(this.nome);
+        mA.setPopularity(this.popularity);
+        mA.setRealease_date(this.date);
+        mA.setSpeechiness(this.speechiness);
+        mA.setTempo(this.tempo);
+        mA.setValence(this.valence);
+        mA.setYear(this.year);
+        return mA;
+    }
+//-------------------------------------------------------------
 }
 
 class Classe{
