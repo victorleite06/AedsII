@@ -179,10 +179,20 @@ class Musica{
         return mA;
     }
 //-------------------------------------------------------------
+//Imprimir
+//-------------------------------------------------------------
+    public void imprimir(){
+
+    }
+//-------------------------------------------------------------
 }
 
 class Classe{
-    public static void main(String[] args){
 
+    public static void lerArquivo(){}
+
+    public static void montarClasse(){}
+    public static void main(String[] args){
+        
     }
 }
