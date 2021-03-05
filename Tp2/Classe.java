@@ -46,7 +46,7 @@ class Musica{
         this.artista = artista;
     }
     public Musica(){
-        Musica("","","",0,0,0,0,0,0,0,0,0,0,0,0,"","");
+        Musica("","","",0,0,0,0,0,0,0,0,0,0,0,0,"1","");
     }
 //-------------------------------------------------------------
 //Sets e Gets
@@ -182,17 +182,37 @@ class Musica{
 //Imprimir
 //-------------------------------------------------------------
     public void imprimir(){
-
+        MyIO.println(this.id + " ## " + this.artista + " ## " + this.nome + " ## " + this.realease_date +
+        " ## " + this.acousticness + " ## " + this.danceability + " ## " + this.instrumentalness +
+        " ## " + this.liveness + " ## " + this.loudness + " ## " + this.speechiness + " ## " + this.energy +
+        " ## " + this.duration_ms);
     }
 //-------------------------------------------------------------
 }
 
 class Classe{
 
-    public static void lerArquivo(){}
+    public static void lerArquivo(String arquivo,Musica m[]){
+        try{
+            Arq.openRead(arquivo);
+            String in;
+            int cont = -1;
+            while(Arq.hasNext()){
+                cont++;
+                in = MyIO.readLine();
+                montarClasse(in,m,cont);
+            }
+            Arq.close();
+        }catch(Exception e){}
+    }
 
-    public static void montarClasse(){}
+    public static void montarClasse(String in,Musica m[],int cont){}
     public static void main(String[] args){
-        
+        String arquivo = "/temp/data.csv";
+        Musica m[] = new Musica();
+        lerArquivo(arquivo,m);
+        for(int i = 0;i < m.length;i++){
+            m[i].imprimir();
+        }
     }
 }
