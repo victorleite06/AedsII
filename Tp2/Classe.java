@@ -153,6 +153,9 @@ class Musica{
         for(int i = 0;i < artista.length;i++)
             this.artista[i] = artista[i];
     }
+    public void setArtista(String artista){
+        this.artista[0] = artista;
+    }
     public String getArtista(){
         return this.artista;
     }
@@ -161,23 +164,23 @@ class Musica{
 //-------------------------------------------------------------
     public Musica clone(){
         Musica mA = new Musica();
-        mA.setAcousticness(this.acousticness);
-        mA.setArtista(this.artista);
-        mA.setDanceability(this.danceability);
-        mA.setDuration_ms(this.duration_ms);
-        mA.setEnergy(this.energy);
-        mA.setId(this.id);
-        mA.setInstrumentalness(this.instrumentalness);
-        mA.setKey(this.key);
-        mA.setLiveness(this.liveness);
-        mA.setLoudness(this.loudness);
-        mA.setNome(this.nome);
-        mA.setPopularity(this.popularity);
-        mA.setRealease_date(this.date);
-        mA.setSpeechiness(this.speechiness);
-        mA.setTempo(this.tempo);
-        mA.setValence(this.valence);
-        mA.setYear(this.year);
+        mA.setAcousticness(this.acousticness);//3
+        mA.setArtista(this.artista);//4
+        mA.setDanceability(this.danceability);//5
+        mA.setDuration_ms(this.duration_ms);//6
+        mA.setEnergy(this.energy);//7
+        mA.setId(this.id);//9
+        mA.setInstrumentalness(this.instrumentalness);//10
+        mA.setKey(this.key);//11
+        mA.setLiveness(this.liveness);//12
+        mA.setLoudness(this.loudness);//13
+        mA.setNome(this.nome);//15
+        mA.setPopularity(this.popularity);//16
+        mA.setRealease_date(this.date);//17
+        mA.setSpeechiness(this.speechiness);//18
+        mA.setTempo(this.tempo);//19
+        mA.setValence(this.valence);//1
+        mA.setYear(this.year);//2
         return mA;
     }
 //-------------------------------------------------------------
@@ -216,13 +219,50 @@ class Classe{
     }
 
     public static void montarClasse(String in,Musica m[],int cont){
-        //-----------------------------------------
-        String auxArt1[] = in.split("[");
-        String auxArt2[] = auxArt1[1].split("]");
-        String artista[] = auxArt2[0].split(",");
-        m[cont].setArtista(artista);
-        //-----------------------------------------
-        
+        String aux[] = in.split(",");
+        String aspas = (char)(34);
+        //-------------------------------------------
+        //Adicionando na classe os artistas
+        if(aux[3].charAt(0) == aspas){
+            String auxArt[] = in.split(aspas);
+            String artista[] = auxArt[1].split(",");
+            m[cont].setArtista(artista);
+        }else{
+            m[cont].setArtista(aux[3]);
+        }
+        //-------------------------------------------
+        //Reescrever "in" retirando os artistas
+        in = reescritaIn(in);
+        //-------------------------------------------
+        //Adicionando na classe o nome
+        String aux1 = in.split(",");
+        if(aux1[13].charAt(0) == aspas){
+            String aux2[] = in.split(aspas);
+            m[cont].setNome(aux2[1]);
+        }else{
+            m[cont].setNome(aux1[13]);
+        }
+        //-------------------------------------------
+        //Reescrever "in" retirando o nome
+        in = reescritaIn(in);
+        //-------------------------------------------
+
+    }
+
+    public static String reescritaIn(String in){
+        String aux = "";
+        String newIn = "";
+        String aspas = (char)(34);
+        String array[] = in.split(aspas);
+        for(int i = 0;i < array.length;i++){
+            if(i != 1){
+                aux += array[i] + ", ";
+            }
+        }
+        for(int i = 0;i < aux.length()-1;i++){
+            newIn = aux.charAt(i);
+        }
+        return newIn;
     }
 
     public static void main(String[] args){
