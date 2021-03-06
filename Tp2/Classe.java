@@ -246,7 +246,22 @@ class Classe{
         //Reescrever "in" retirando o nome
         in = reescritaIn(in);
         //-------------------------------------------
-
+        String entrada[] = in.split(",");
+        m[cont].setValence(entrada[0]);
+        m[cont].setYear(entrada[1]);
+        m[cont].setAcousticness(entrada[2]);
+        m[cont].setDanceability(entrada[3]);
+        m[cont].setDuration_ms(entrada[4]);
+        m[cont].setEnergy(entrada[5]);
+        m[cont].setId(entrada[7]);
+        m[cont].setInstrumentalness(entrada[8]);
+        m[cont].setKey(entrada[9]);
+        m[cont].setLiveness(entrada[10]);
+        m[cont].setLoudness(entrada[11]);
+        m[cont].setPopularity(entrada[14]);
+        m[cont].setRealease_date(entrada[15]);
+        m[cont].setSpeechiness(entrada[16]);
+        m[cont].setTempo(entrada[17]);
     }
 
     public static String reescritaIn(String in){
