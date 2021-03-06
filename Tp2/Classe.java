@@ -8,7 +8,7 @@ class Musica{
     private String id;
     private String nome;
     private String key;
-    private String artista;
+    private String artista[];
     private Date realease_date;
     private double acousticness;
     private double danceability;
@@ -25,7 +25,7 @@ class Musica{
 //-------------------------------------------------------------
 //Construtores da Classe
 //-------------------------------------------------------------
-    public Musica(String id,String nome,String key,double acousticness,double danceability,double energy, int duration_ms,double instrumentalness,double valence,int popularity,float tempo,double liveness,double loudness,double speechiness,int year,String date,String artista){
+    public Musica(String id,String nome,String key,double acousticness,double danceability,double energy, int duration_ms,double instrumentalness,double valence,int popularity,float tempo,double liveness,double loudness,double speechiness,int year,String date,String artista[]){
         this.id = id;
         this.nome = nome;
         this.key = key;
@@ -43,7 +43,8 @@ class Musica{
         this.year = year;
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
         this.realease_date = formato.parse(date);
-        this.artista = artista;
+        for(int i = 0;i < artista.length;i++)
+            this.artista[i] = artista[i];
     }
     public Musica(){
         Musica("","","",0,0,0,0,0,0,0,0,0,0,0,0,"1","");
@@ -148,8 +149,9 @@ class Musica{
     public Date getRealease_date(){
         return this.realease_date;
     }
-    public void setArtista(String artista){
-        this.artista = artista;
+    public void setArtista(String artista[]){
+        for(int i = 0;i < artista.length;i++)
+            this.artista[i] = artista[i];
     }
     public String getArtista(){
         return this.artista;
@@ -182,7 +184,14 @@ class Musica{
 //Imprimir
 //-------------------------------------------------------------
     public void imprimir(){
-        MyIO.println(this.id + " ## " + this.artista + " ## " + this.nome + " ## " + this.realease_date +
+        String artista = "[";
+        String aux[] = getArtista();
+        artista += aux[0];
+        for(int i = 1;i < aux.length;i++){
+            artista += ", " + aus[i];
+        }
+        artista += "]";
+        MyIO.println(this.id + " ## " + artista + " ## " + this.nome + " ## " + this.realease_date +
         " ## " + this.acousticness + " ## " + this.danceability + " ## " + this.instrumentalness +
         " ## " + this.liveness + " ## " + this.loudness + " ## " + this.speechiness + " ## " + this.energy +
         " ## " + this.duration_ms);
@@ -206,7 +215,16 @@ class Classe{
         }catch(Exception e){}
     }
 
-    public static void montarClasse(String in,Musica m[],int cont){}
+    public static void montarClasse(String in,Musica m[],int cont){
+        //-----------------------------------------
+        String auxArt1[] = in.split("[");
+        String auxArt2[] = auxArt1[1].split("]");
+        String artista[] = auxArt2[0].split(",");
+        m[cont].setArtista(artista);
+        //-----------------------------------------
+        
+    }
+
     public static void main(String[] args){
         String arquivo = "/temp/data.csv";
         Musica m[] = new Musica();
