@@ -260,7 +260,7 @@ class Classe{
                 while(aux[w].charAt(aux[w].length()-1) != '"'){ w++; }
                 for(int i = x;i <= (w-x)+1;i++){
                     for(int j = 0;j < aux[i].length();j++){
-                        aux1 += aux[i].charAt(j) + ',';
+                        aux1 += aux[i].charAt(j) + ',' + ' ';
                     }
                 }
                 for(int i = 0;i < aux1.length()-1;i++){
