@@ -25,7 +25,7 @@ class Musica{
 //-------------------------------------------------------------
 //Construtores da Classe
 //-------------------------------------------------------------
-    public Musica(String id,String nome,String key,double acousticness,double danceability,double energy, int duration_ms,double instrumentalness,double valence,int popularity,float tempo,double liveness,double loudness,double speechiness,int year,String date,String artista){
+    public Musica(String id,String nome,String key,double acousticness,double danceability,double energy, int duration_ms,double instrumentalness,double valence,int popularity,float tempo,double liveness,double loudness,double speechiness,int year,Date date,String artista){
         this.id = id;
         this.nome = nome;
         this.key = key;
@@ -41,13 +41,14 @@ class Musica{
         this.loudness = loudness;
         this.speechiness = speechiness;
         this.year = year;
-        SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/dd");
-        this.realease_date = formato.parse(date);
+        //SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/dd");
+        //this.realease_date = formato.parse(date);
+        this.realease_date = date;
         this.artista = artista;
     }
 
     public Musica(){
-        Musica("","","",0,0,0,0,0,0,0,0,0,0,0,0,"1","");
+        Musica("","","",0,0,0,0,0,0,0,0,0,0,0,0,1,"");
     }
 //-------------------------------------------------------------
 //Sets e Gets
@@ -142,9 +143,10 @@ class Musica{
     public int getYear(){
         return this.year;
     }
-    public void setRealease_date(String date){
-        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-        this.realease_date = formato.parse(date);
+    public void setRealease_date(Date date){
+        /*SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        this.realease_date = formato.parse(date);*/
+        this.realease_date = date;
     }
     public Date getRealease_date(){
         return this.realease_date;
@@ -160,23 +162,23 @@ class Musica{
 //-------------------------------------------------------------
     public Musica clone(){
         Musica mA = new Musica();
-        mA.setAcousticness(this.acousticness);//3
-        mA.setArtista(this.artista);//4
-        mA.setDanceability(this.danceability);//5
-        mA.setDuration_ms(this.duration_ms);//6
-        mA.setEnergy(this.energy);//7
-        mA.setId(this.id);//9
-        mA.setInstrumentalness(this.instrumentalness);//10
-        mA.setKey(this.key);//11
-        mA.setLiveness(this.liveness);//12
-        mA.setLoudness(this.loudness);//13
-        mA.setNome(this.nome);//15
-        mA.setPopularity(this.popularity);//16
-        mA.setRealease_date(this.date);//17
-        mA.setSpeechiness(this.speechiness);//18
-        mA.setTempo(this.tempo);//19
-        mA.setValence(this.valence);//1
-        mA.setYear(this.year);//2
+        mA.setAcousticness(this.acousticness);
+        mA.setArtista(this.artista);
+        mA.setDanceability(this.danceability);
+        mA.setDuration_ms(this.duration_ms);
+        mA.setEnergy(this.energy);
+        mA.setId(this.id);
+        mA.setInstrumentalness(this.instrumentalness);
+        mA.setKey(this.key);
+        mA.setLiveness(this.liveness);
+        mA.setLoudness(this.loudness);
+        mA.setNome(this.nome);
+        mA.setPopularity(this.popularity);
+        mA.setRealease_date(this.date);
+        mA.setSpeechiness(this.speechiness);
+        mA.setTempo(this.tempo);
+        mA.setValence(this.valence);
+        mA.setYear(this.year);
         return mA;
     }
 //-------------------------------------------------------------
@@ -275,7 +277,9 @@ class Classe{
 
             m[cont].setPopularity(Integer.parseInt(aux[x]));
             x++;
-            m[cont].setRealease_date(aux[x]);
+            SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/dd");
+            Date data = formato.parse(aux[x]); 
+            m[cont].setRealease_date(data);
             x++;
             m[cont].setSpeechiness(Double.parseDouble(aux[x]));
             x++;
