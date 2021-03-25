@@ -8,7 +8,7 @@ class Musica{
     private String id;
     private String nome;
     private String key;
-    private String artista[];
+    private String artista;
     private Date realease_date;
     private double acousticness;
     private double danceability;
@@ -25,7 +25,7 @@ class Musica{
 //-------------------------------------------------------------
 //Construtores da Classe
 //-------------------------------------------------------------
-    public Musica(String id,String nome,String key,double acousticness,double danceability,double energy, int duration_ms,double instrumentalness,double valence,int popularity,float tempo,double liveness,double loudness,double speechiness,int year,String date,String artista[]){
+    public Musica(String id,String nome,String key,double acousticness,double danceability,double energy, int duration_ms,double instrumentalness,double valence,int popularity,float tempo,double liveness,double loudness,double speechiness,int year,String date,String artista){
         this.id = id;
         this.nome = nome;
         this.key = key;
@@ -41,11 +41,11 @@ class Musica{
         this.loudness = loudness;
         this.speechiness = speechiness;
         this.year = year;
-        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/dd");
         this.realease_date = formato.parse(date);
-        for(int i = 0;i < artista.length;i++)
-            this.artista[i] = artista[i];
+        this.artista = artista;
     }
+
     public Musica(){
         Musica("","","",0,0,0,0,0,0,0,0,0,0,0,0,"1","");
     }
@@ -149,12 +149,8 @@ class Musica{
     public Date getRealease_date(){
         return this.realease_date;
     }
-    public void setArtista(String artista[]){
-        for(int i = 0;i < artista.length;i++)
-            this.artista[i] = artista[i];
-    }
     public void setArtista(String artista){
-        this.artista[0] = artista;
+        this.artista = artista;
     }
     public String getArtista(){
         return this.artista;
@@ -187,14 +183,7 @@ class Musica{
 //Imprimir
 //-------------------------------------------------------------
     public void imprimir(){
-        String artista = "[";
-        String aux[] = getArtista();
-        artista += aux[0];
-        for(int i = 1;i < aux.length;i++){
-            artista += ", " + aus[i];
-        }
-        artista += "]";
-        MyIO.println(this.id + " ## " + artista + " ## " + this.nome + " ## " + this.realease_date +
+        MyIO.println(this.id + " ## " + this.artista + " ## " + this.nome + " ## " + this.realease_date +
         " ## " + this.acousticness + " ## " + this.danceability + " ## " + this.instrumentalness +
         " ## " + this.liveness + " ## " + this.loudness + " ## " + this.speechiness + " ## " + this.energy +
         " ## " + this.duration_ms);
@@ -219,65 +208,78 @@ class Classe{
     }
 
     public static void montarClasse(String in,Musica m[],int cont){
-        String aux[] = in.split(",");
-        String aspas = (char)(34);
-        //-------------------------------------------
-        //Adicionando na classe os artistas
-        if(aux[3].charAt(0) == aspas){
-            String auxArt[] = in.split(aspas);
-            String artista[] = auxArt[1].split(",");
-            m[cont].setArtista(artista);
-        }else{
-            m[cont].setArtista(aux[3]);
-        }
-        //-------------------------------------------
-        //Reescrever "in" retirando os artistas
-        in = reescritaIn(in);
-        //-------------------------------------------
-        //Adicionando na classe o nome
-        String aux1 = in.split(",");
-        if(aux1[13].charAt(0) == aspas){
-            String aux2[] = in.split(aspas);
-            m[cont].setNome(aux2[1]);
-        }else{
-            m[cont].setNome(aux1[13]);
-        }
-        //-------------------------------------------
-        //Reescrever "in" retirando o nome
-        in = reescritaIn(in);
-        //-------------------------------------------
-        String entrada[] = in.split(",");
-        m[cont].setValence(entrada[0]);
-        m[cont].setYear(entrada[1]);
-        m[cont].setAcousticness(entrada[2]);
-        m[cont].setDanceability(entrada[3]);
-        m[cont].setDuration_ms(entrada[4]);
-        m[cont].setEnergy(entrada[5]);
-        m[cont].setId(entrada[7]);
-        m[cont].setInstrumentalness(entrada[8]);
-        m[cont].setKey(entrada[9]);
-        m[cont].setLiveness(entrada[10]);
-        m[cont].setLoudness(entrada[11]);
-        m[cont].setPopularity(entrada[14]);
-        m[cont].setRealease_date(entrada[15]);
-        m[cont].setSpeechiness(entrada[16]);
-        m[cont].setTempo(entrada[17]);
-    }
-
-    public static String reescritaIn(String in){
-        String aux = "";
-        String newIn = "";
-        String aspas = (char)(34);
-        String array[] = in.split(aspas);
-        for(int i = 0;i < array.length;i++){
-            if(i != 1){
-                aux += array[i] + ", ";
+            String aux[] = in.split(",");
+            String aux1 = "",artista = "",nome = "";
+            int x = 0,w;
+            m[cont].setValence(Double.parseDouble(aux[x]));
+            x++;
+            m[cont].setYear(Integer.parseInt(aux[x]));
+            x++;
+            m[cont].setAcousticness(Double.parseDouble(aux[x]));
+            x++;
+            
+            if(aux[x].charAt(0) == '['){
+                w = x;
+                while(aux[w].charAt(aux[w].length()-1) != ']'){ w++; }
+                for(int i = x;i <= (w-x)+1;i++){
+                    for(int j = 0;j < aux[i].length();j++){
+                        aux1 += aux[i].charAt(j) + ',';
+                    }
+                }
+                for(int i = 0;i < aux1.length()-1;i++){
+                    artista += aux1.charAt(i);
+                }
+                m[cont].setArtista(artista);
+                x = w+2;
+            }else{
+                m[cont].setArtista(aux[x]);
+                x++;
             }
-        }
-        for(int i = 0;i < aux.length()-1;i++){
-            newIn = aux.charAt(i);
-        }
-        return newIn;
+
+            m[cont].setDanceability(Double.parseDouble(aux[x]));
+            x++;
+            m[cont].setDuration_ms(Integer.parseInt(aux[x]));
+            x++;
+            m[cont].setEnergy(Double.parseDouble(aux[x]));
+            x += 2;
+            m[cont].setId(aux[x]);
+            x++;
+            m[cont].setInstrumentalness(Double.parseDouble(aux[x]));
+            x++;
+            m[cont].setKey(aux[x]);
+            x++;
+            m[cont].setLiveness(Double.parseDouble(aux[x]));
+            x++;
+            m[cont].setLoudness(Double.parseDouble(aux[x]));
+            x++;
+            
+            aux1 = "";
+
+            if(aux[x].charAt(0) == '"'){
+                w = x;
+                while(aux[w].charAt(aux[w].length()-1) != '"'){ w++; }
+                for(int i = x;i <= (w-x)+1;i++){
+                    for(int j = 0;j < aux[i].length();j++){
+                        aux1 += aux[i].charAt(j) + ',';
+                    }
+                }
+                for(int i = 0;i < aux1.length()-1;i++){
+                    nome += aux1.charAt(i);
+                }
+                m[cont].setNome(nome);
+                x = w+2;
+            }else{
+                m[cont].setNome(aux[x]);
+                x++;
+            }
+
+            m[cont].setPopularity(Integer.parseInt(aux[x]));
+            x++;
+            m[cont].setRealease_date(aux[x]);
+            x++;
+            m[cont].setSpeechiness(Double.parseDouble(aux[x]));
+            x++;
+            m[cont].setTempo(Float.parseFloat(aux[x]));
     }
 
     public static void main(String[] args){
