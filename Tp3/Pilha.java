@@ -289,6 +289,7 @@ class PilhaSimples{
 			MyIO.println("[" + i + "] ");
 			musicas[i].imprimir();
 		}
+        MyIO.print("\n");
 	}
 	//-------------------------------------------------------------
 }
@@ -384,7 +385,7 @@ class Pilha{
                     id += in.charAt(h);
                 }
                 //---------------------------------------
-                
+
 				for(int j = 0;j < musicas.length;j++){
                     if(musicas[j].getId().contains(id))
                         pos = j;

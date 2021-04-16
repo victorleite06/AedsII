@@ -330,6 +330,7 @@ class ListaSimples{
 			MyIO.println("[" + i + "] ");
 			musicas[i].imprimir();
 		}
+		MyIO.print("\n");
 	}
 	//-------------------------------------------------------------
 }
