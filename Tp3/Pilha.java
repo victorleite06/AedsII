@@ -286,10 +286,10 @@ class PilhaSimples{
 	//-------------------------------------------------------------
 	public void mostrar(){
 		for(int i = 0;i < n;i++){
-			MyIO.println("[" + i + "] ");
+			MyIO.print("[" + i + "] ");
 			musicas[i].imprimir();
+            MyIO.print("\n");
 		}
-        MyIO.print("\n");
 	}
 	//-------------------------------------------------------------
 }
