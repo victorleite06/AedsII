@@ -400,7 +400,7 @@ class FilaCircular{
                 //---------------------------------------
 
 				for(int j = 0;j < musicas.length;j++){
-                    if(musicas[j].getId().contains(id))
+                    if(id.equals(musicas[j].getId()))
                         pos = j;
                 }
                 fila.inserir(musicas[pos]);

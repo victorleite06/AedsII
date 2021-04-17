@@ -413,6 +413,7 @@ class Lista{
 		Musica musicas[] = montarClasse(playlistTam, ids, totalMusicList);
 
 		int n = MyIO.readInt();
+		//Musica m = new Musica();
 
 		ListaSimples lista = new ListaSimples(50);
 		for(int i = 0;i < n;i++){
@@ -422,22 +423,31 @@ class Lista{
 				String aux[] = in.split(" ");
 				if(in.charAt(1) == 'I'){
 					for(int j = 0;j < musicas.length;j++){
-						if(musicas[j].getId().contains(aux[1]))
+						if(aux[1].equals(musicas[j].getId())){
 							pos = j;
+							//m = musicas[j].clone();
+							j = musicas.length;
+						}
 					}
 					lista.inserirInicio(musicas[pos]);
 				}
 				if(in.charAt(1) == 'F'){
 					for(int j = 0;j < musicas.length;j++){
-						if(musicas[j].getId().contains(aux[1]))
+						if(aux[1].equals(musicas[j].getId())){
 							pos = j;
+							//m = musicas[j].clone();
+							j = musicas.length;
+						}
 					}
 					lista.inserirFim(musicas[pos]);
 				}
 				if(in.charAt(1) == '*'){
 					for(int j = 0;j < musicas.length;j++){
-						if(musicas[j].getId().contains(aux[2]))
+						if(aux[2].equals(musicas[j].getId())){
 							pos = j;
+							//m = musicas[j].clone();
+							j = musicas.length;
+						}
 					}
 					lista.inserir(musicas[pos],Integer.parseInt(aux[1]));
 				}
