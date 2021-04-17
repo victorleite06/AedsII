@@ -266,7 +266,7 @@ class PilhaSimples{
 		if(n >= musicas.length)
 			throw new Exception("Erro!");
 		
-        musicas[n] = m;
+        musicas[n] = m.clone();
 		n++;
 	}
 	//-------------------------------------------------------------
@@ -276,7 +276,7 @@ class PilhaSimples{
 		if(n == 0)
 			throw new Exception("Erro!");
 		
-		Musica m = musicas[n];
+		Musica m = musicas[n-1];
 		n--;
 
 		MyIO.println("(R) " + m.getNome());
@@ -288,7 +288,7 @@ class PilhaSimples{
 		for(int i = 0;i < n;i++){
 			MyIO.print("[" + i + "] ");
 			musicas[i].imprimir();
-            MyIO.print("\n");
+        	MyIO.print("\n");
 		}
 	}
 	//-------------------------------------------------------------
@@ -347,8 +347,8 @@ class Pilha{
 	public static String[] ler() throws Exception {
 		final int TOTAL_MUSIC_NUMBER = 170625;
 		String totalMusicList[] = new String[TOTAL_MUSIC_NUMBER];
-		FileReader arquivo = new FileReader("data.csv");
-		//FileReader arquivo = new FileReader("/tmp/data.csv");
+		FileReader arquivo = new FileReader("data.csv"); // Teste interno
+		//FileReader arquivo = new FileReader("/tmp/data.csv"); // Mandar para o VERDE
 		BufferedReader ler = new BufferedReader(arquivo);
 		String linha = ler.readLine();
 		linha = ler.readLine();

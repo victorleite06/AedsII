@@ -244,99 +244,70 @@ class Musica{
 	}
 }
 
-class ListaSimples{
+class FilaCircularLinear{
 
 	private Musica musicas[];
-	private int n;
+	private int primeiro, ultimo, cont;
 
 	//-------------------------------------------------------------
 	//Construtores
 	//-------------------------------------------------------------
-	public ListaSimples(){
-		this(6);
+	public FilaCircularLinear(){
+		this(5);
 	}
-	public ListaSimples(int tamanho){
+	public FilaCircularLinear(int tamanho){
 		musicas = new Musica[tamanho];
-		n = 0;
+		primeiro = ultimo = cont = 0;
 	}
 	//-------------------------------------------------------------
-	//Inserir Inicio, Fim e em uma posição
+	//Inserir
 	//-------------------------------------------------------------
-	public void inserirInicio(Musica m)throws Exception{
-		if(n >= musicas.length)
-			throw new Exception("Erro!");
+	public void inserir(Musica m)throws Exception{
+		if(((ultimo + 1) % musicas.length) == primeiro)
+			remover();
+		
+        musicas[ultimo] = m.clone();
+		ultimo = (ultimo + 1) % musicas.length;
+        cont++;
 
-		for(int i = n;i > 0;i--)
-			musicas[i] = musicas[i-1];
-
-		musicas[0] = m.clone();
-		n++;
-	}
-	public void inserirFim(Musica m)throws Exception{
-		if(n >= musicas.length)
-			throw new Exception("Erro!");
-
-		musicas[n] = m.clone();
-		n++;
-	}
-	public void inserir(Musica m,int pos)throws Exception{
-		if(n >= musicas.length || pos < 0 || pos > n)
-			throw new Exception("Erro!");
-
-		for(int i = n;i > pos;i--)
-			musicas[i] = musicas[i-1];
-
-		musicas[pos] = m.clone();
-		n++;
+        int soma = 0;
+        float media;
+        for(int i = primeiro;i != ultimo;i = ((i + 1) % musicas.length) + 1){
+            soma += musicas[i].getDuration();
+        }
+        media = soma/cont;
+        int round = Math.round(media);
+        MyIO.println(round);
 	}
 	//-------------------------------------------------------------
-	//Remover Inicio, Fim e em uma posição
+	//Remover
 	//-------------------------------------------------------------
-	public void removerInicio()throws Exception{
-		if(n == 0)
-			throw new Exception("Erro!");
-
-		Musica m = musicas[0];
-		n--;
-
-		for(int i = 0;i < n;i++)
-			musicas[i] = musicas[i+1];
-
-		MyIO.println("(R) " + m.getNome());
-	}
-	public void removerFim()throws Exception{
-		if(n == 0)
-			throw new Exception("Erro!");
-
-		MyIO.println("(R) " + musicas[n-1].getNome());
-		n--;
-	}
-	public void remover(int pos)throws Exception{
-		if(n == 0 || pos < 0 || pos > n)
+	public void remover()throws Exception{
+		if(primeiro == ultimo)
 			throw new Exception("Erro!");
 		
-		Musica m = musicas[pos];
-		n--;
-
-		for(int i = pos;i < n;i++)
-			musicas[i] = musicas[i+1];
+		Musica m = musicas[primeiro];
+		primeiro = (primeiro + 1) % musicas.length;
 
 		MyIO.println("(R) " + m.getNome());
+        cont--;
 	}
 	//-------------------------------------------------------------
 	//Mostrar
 	//-------------------------------------------------------------
 	public void mostrar(){
-		for(int i = 0;i < n;i++){
+		int i = primeiro;
+        while(i != ultimo){
 			MyIO.print("[" + i + "] ");
 			musicas[i].imprimir();
-			MyIO.print("\n");
+        	MyIO.print("\n");
+            i = (i + 1) % musicas.length;
 		}
 	}
 	//-------------------------------------------------------------
 }
 
-class Lista{
+class FilaCircular{
 
     public static Musica cadastra(String dadosMusica) throws ParseException {
 		int tamanhoString = 19;
@@ -389,8 +360,8 @@ class Lista{
 	public static String[] ler() throws Exception {
 		final int TOTAL_MUSIC_NUMBER = 170625;
 		String totalMusicList[] = new String[TOTAL_MUSIC_NUMBER];
-		FileReader arquivo = new FileReader("data.csv");
-		//FileReader arquivo = new FileReader("/tmp/data.csv");
+		FileReader arquivo = new FileReader("data.csv"); // Teste interno
+		//FileReader arquivo = new FileReader("/tmp/data.csv"); // Mandar para o VERDE
 		BufferedReader ler = new BufferedReader(arquivo);
 		String linha = ler.readLine();
 		linha = ler.readLine();
@@ -414,45 +385,30 @@ class Lista{
 
 		int n = MyIO.readInt();
 
-		ListaSimples lista = new ListaSimples(50);
+		FilaCircularLinear fila = new FilaCircularLinear();
 		for(int i = 0;i < n;i++){
 			String in = MyIO.readLine();
 			int pos = 0;
 			if(in.charAt(0) == 'I'){
-				String aux[] = in.split(" ");
-				if(in.charAt(1) == 'I'){
-					for(int j = 0;j < musicas.length;j++){
-						if(musicas[j].getId().contains(aux[1]))
-							pos = j;
-					}
-					lista.inserirInicio(musicas[pos]);
-				}
-				if(in.charAt(1) == 'F'){
-					for(int j = 0;j < musicas.length;j++){
-						if(musicas[j].getId().contains(aux[1]))
-							pos = j;
-					}
-					lista.inserirFim(musicas[pos]);
-				}
-				if(in.charAt(1) == '*'){
-					for(int j = 0;j < musicas.length;j++){
-						if(musicas[j].getId().contains(aux[2]))
-							pos = j;
-					}
-					lista.inserir(musicas[pos],Integer.parseInt(aux[1]));
-				}
+                
+                //Separar Id do Inserir
+                //---------------------------------------
+                String id = "";
+                for(int h = 2;h < in.length();h++){
+                    id += in.charAt(h);
+                }
+                //---------------------------------------
+
+				for(int j = 0;j < musicas.length;j++){
+                    if(musicas[j].getId().contains(id))
+                        pos = j;
+                }
+                fila.inserir(musicas[pos]);
 			}
 			if(in.charAt(0) == 'R'){
-				if(in.charAt(1) == 'I')
-					lista.removerInicio();
-				if(in.charAt(1) == 'F')
-					lista.removerFim();
-				if(in.charAt(1) == '*'){
-					String aux[] = in.split(" ");
-					lista.remover(Integer.parseInt(aux[1]));
-				}
+				fila.remover();
 			}
 		}
-		lista.mostrar();
+		fila.mostrar();
 	}
 }
