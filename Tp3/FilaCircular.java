@@ -272,7 +272,7 @@ class FilaCircularLinear{
 
         int soma = 0;
         float media;
-        for(int i = primeiro;i != ultimo;i = ((i + 1) % musicas.length) + 1){
+        for(int i = primeiro;i != ultimo;i = ((i + 1) % musicas.length)){
             soma += musicas[i].getDuration();
         }
         media = soma/cont;
@@ -409,6 +409,5 @@ class FilaCircular{
 				fila.remover();
 			}
 		}
-		fila.mostrar();
 	}
 }
