@@ -371,12 +371,8 @@ class ListaFlexivelSimples{
     //-------------------------------------------------------------
     //isVazio(), posEqual0(int pos)
     //-------------------------------------------------------------
-    private boolean isVazio(){
-        return primeiro == ultimo;
-    }
-    private boolean posEqual0(int pos){
-        return pos == 0;
-    }
+    private boolean isVazio(){ return primeiro == ultimo; }
+    private boolean posEqual0(int pos){ return pos == 0; }
     //-------------------------------------------------------------
 	//Mostrar
 	//-------------------------------------------------------------
