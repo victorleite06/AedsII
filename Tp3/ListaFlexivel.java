@@ -248,7 +248,9 @@ class Celula{
 
     public Musica musica;
     public Celula prox;
-
+    //-------------------------------------------------------------
+	//Construtores
+	//-------------------------------------------------------------
     public Celula(){
         this(new Musica());
     }
@@ -291,7 +293,7 @@ class ListaFlexivelSimples{
         
         if(pos < 0 || pos > tamanho){
             throw new Exception("Erro!");
-        }else if(pos == 0){
+        }else if(posEqual0(pos)){
             inserirInicio(m);
         }else if(pos == tamanho){
             inserirFim(m);
@@ -309,7 +311,7 @@ class ListaFlexivelSimples{
 	//Remover Inicio, Fim e em uma posição
 	//-------------------------------------------------------------
     public void removerInicio()throws Exception{
-        if(primeiro == ultimo)
+        if(isVazio())
             throw new Exception("Erro!");
         
         Celula tmp = primeiro;
@@ -322,7 +324,7 @@ class ListaFlexivelSimples{
         m.imprimir();
     }
     public void removerFim()throws Exception{
-        if(primeiro == ultimo)
+        if(isVazio())
             throw new Exception("Erro!");
         
         Celula i = primeiro;
@@ -339,9 +341,9 @@ class ListaFlexivelSimples{
         int tamanho = 0;
         for(Celula i = primeiro;i != ultimo;i = i.prox, tamanho++);
 
-        if(primeiro == ultimo){
+        if(isVazio()){
             throw new Exception("Erro!");
-        }else if(pos == 0){
+        }else if(posEqual0(pos)){
             removerInicio();
         }else if(pos == tamanho - 1){
             removerFim();
@@ -358,6 +360,15 @@ class ListaFlexivelSimples{
             MyIO.println("(R) ");
             m.imprimir();
         }
+    }
+    //-------------------------------------------------------------
+    //isVazio(), posEqual0(int pos)
+    //-------------------------------------------------------------
+    private boolean isVazio(){
+        return primeiro == ultimo;
+    }
+    private boolean posEqual0(int pos){
+        return pos == 0;
     }
     //-------------------------------------------------------------
 	//Mostrar
