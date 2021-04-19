@@ -25,13 +25,14 @@ class Musica{
 	private double loudness; // 12
 	private double speechiness; // 17
 	private int year; // 1
-
+    //-------------------------------------------------------------
+	//Construtores
+	//-------------------------------------------------------------
 	public Musica(){
 		this.id = ""; // 8
         this.nome = ""; // 14
 		this.key = ""; // 10
 	}
-
 	public Musica(String[] values)throws ParseException{
 		this.id = values[8]; // 8
 		this.nome = values[14]; // 14
@@ -70,7 +71,9 @@ class Musica{
 			realease_date = formato.parse(values[16]);
 		}
 	}
-
+    //-------------------------------------------------------------
+	//Sets, Gets
+	//-------------------------------------------------------------
 	public String getId(){
 		return id;
 	}
@@ -206,8 +209,9 @@ class Musica{
 	public void setYear(int year){
 		this.year = year;
 	}
-
-	
+    //-------------------------------------------------------------
+	//Clone
+	//-------------------------------------------------------------
 	public Musica clone(){
 		Musica novo = new Musica();
 		novo.nome = this.nome;
@@ -229,19 +233,22 @@ class Musica{
 		novo.year = this.year;
 		return novo;
 	}
-
-	
-	public void imprimir(){
+    //-------------------------------------------------------------
+	//Imprimir
+	//-------------------------------------------------------------
+		public void imprimir(){
 		System.out.print(this.toString());
 	}
-
-	
+    //-------------------------------------------------------------
+	//toString()
+	//-------------------------------------------------------------	
 	public String toString(){
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		return id + " ## " + artists.toString() + " ## " + nome + " ## " + sdf.format(realease_date) + " ## " + acousticness
 				+ " ## " + danceability + " ## " + instrumentalness + " ## " + liveness + " ## " + loudness + " ## "
 				+ speechiness + " ## " + energy + " ## " + duration_ms;
 	}
+    //-------------------------------------------------------------	
 }
 
 class PilhaSimples{
