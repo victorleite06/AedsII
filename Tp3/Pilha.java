@@ -303,6 +303,8 @@ class PilhaSimples{
 
 class Pilha{
 
+	final static BufferedReader nt = new BufferedReader(new InputStreamReader(System.in));
+
     public static Musica cadastra(String dadosMusica) throws ParseException {
 		int tamanhoString = 19;
         String campos[] = new String[tamanhoString];
@@ -339,14 +341,14 @@ class Pilha{
 	}
 
 	public static int entradaPadrao(String ids[]) throws IOException {
-		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+		
 		int i = 0;
 
-		String linha = in.readLine();
+		String linha = nt.readLine();
 		while (!(linha.contains("FIM"))) {
 			ids[i] = linha;
 			i++;
-			linha = in.readLine();
+			linha = nt.readLine();
 		}
 		return i;
 	}
@@ -354,8 +356,8 @@ class Pilha{
 	public static String[] ler() throws Exception {
 		final int TOTAL_MUSIC_NUMBER = 170625;
 		String totalMusicList[] = new String[TOTAL_MUSIC_NUMBER];
-		FileReader arquivo = new FileReader("data.csv"); // Teste interno
-		//FileReader arquivo = new FileReader("/tmp/data.csv"); // Mandar para o VERDE
+		//FileReader arquivo = new FileReader("data.csv"); // Teste interno
+		FileReader arquivo = new FileReader("/tmp/data.csv"); // Mandar para o VERDE
 		BufferedReader ler = new BufferedReader(arquivo);
 		String linha = ler.readLine();
 		linha = ler.readLine();
@@ -369,6 +371,12 @@ class Pilha{
 		return totalMusicList;
 	}
 
+	public static boolean isInserir(char c){
+		return c == 'I';
+	}
+	public static boolean isRemover(char c){
+		return c == 'R';
+	}
 	public static void main(String args[]) throws Exception {
 
 		String ids[] = new String[500];
@@ -377,14 +385,20 @@ class Pilha{
 		String totalMusicList[] = ler();
 		Musica musicas[] = montarClasse(playlistTam, ids, totalMusicList);
 
-		int n = MyIO.readInt();
+		PilhaSimples pilha = new PilhaSimples(200);
 
-		PilhaSimples pilha = new PilhaSimples(50);
+		for(int i = 0;i < musicas.length;i++){
+			pilha.inserir(musicas[i]);
+		}
+
+		String x = nt.readLine();
+		int n = Integer.parseInt(x);
+
 		for(int i = 0;i < n;i++){
-			String in = MyIO.readLine();
+			String in = nt.readLine();
 			int pos = 0;
-			if(in.charAt(0) == 'I'){
-                
+			if(isInserir(in.charAt(0))){
+				//---------------------------------------
                 //Separar Id do Inserir
                 //---------------------------------------
                 String id = "";
@@ -393,13 +407,16 @@ class Pilha{
                 }
                 //---------------------------------------
 
-				for(int j = 0;j < musicas.length;j++){
-                    if(id.equals(musicas[j].getId()))
-                        pos = j;
-                }
-                pilha.inserir(musicas[pos]);
+				for(int j = 0;j < totalMusicList.length;j++){
+					if(totalMusicList[j].contains(id)){
+						pos = j;
+						j = totalMusicList.length;
+					}
+				}
+				Musica m = cadastra(totalMusicList[pos]);
+				pilha.inserir(m);
 			}
-			if(in.charAt(0) == 'R'){
+			if(isRemover(in.charAt(0))){
 				pilha.remover();
 			}
 		}
