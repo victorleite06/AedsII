@@ -327,8 +327,7 @@ class ListaFlexivelSimples{
         tmp.prox = null;
         tmp = null;
 
-        MyIO.println("(R) ");
-        m.imprimir();
+        MyIO.println("(R) " + m.getNome());
     }
     public void removerFim()throws Exception{
         if(isVazio())
@@ -341,8 +340,7 @@ class ListaFlexivelSimples{
         ultimo = i;
         i = ultimo.prox = null;
 
-        MyIO.println("(R) ");
-        m.imprimir();
+        MyIO.println("(R) " + m.getNome());
     }
     public void remover(int pos)throws Exception{
         int tamanho = 0;
@@ -364,8 +362,7 @@ class ListaFlexivelSimples{
             tmp.prox = null;
             i = tmp = null;
 
-            MyIO.println("(R) ");
-            m.imprimir();
+            MyIO.println("(R) " + m.getNome());
         }
     }
     //-------------------------------------------------------------
@@ -379,7 +376,7 @@ class ListaFlexivelSimples{
     public void mostrar(){
         int cont = 0;
         for(Celula i = primeiro.prox;i != ultimo;i = i.prox, cont++){
-            MyIO.println("[" + cont + "] ");
+            MyIO.print("[" + cont + "] ");
             i.musica.imprimir();
             MyIO.print("\n");
         }
@@ -388,6 +385,8 @@ class ListaFlexivelSimples{
 }   
 
 class ListaFlexivel{
+
+	final static BufferedReader nt = new BufferedReader(new InputStreamReader(System.in));
 
     public static Musica cadastra(String dadosMusica) throws ParseException {
 		int tamanhoString = 19;
@@ -425,14 +424,13 @@ class ListaFlexivel{
 	}
 
 	public static int entradaPadrao(String ids[]) throws IOException {
-		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 		int i = 0;
 
-		String linha = in.readLine();
+		String linha = nt.readLine();
 		while (!(linha.contains("FIM"))) {
 			ids[i] = linha;
 			i++;
-			linha = in.readLine();
+			linha = nt.readLine();
 		}
 		return i;
 	}
@@ -463,43 +461,49 @@ class ListaFlexivel{
 		String totalMusicList[] = ler();
 		Musica musicas[] = montarClasse(playlistTam, ids, totalMusicList);
 
-		int n = MyIO.readInt();
-
 		ListaFlexivelSimples lista = new ListaFlexivelSimples();
+
+		for(int i = 0;i < musicas.length;i++){
+			lista.inserirFim(musicas[i]);
+		}
+
+		String x = nt.readLine();
+		int n = Integer.parseInt(x);
+
 		for(int i = 0;i < n;i++){
-			String in = MyIO.readLine();
+			String in = nt.readLine();
 			int pos = 0;
 			if(in.charAt(0) == 'I'){
 				String aux[] = in.split(" ");
 				if(in.charAt(1) == 'I'){
-					for(int j = 0;j < musicas.length;j++){
-						if(aux[1].equals(musicas[j].getId())){
+					for(int j = 0;j < totalMusicList.length;j++){
+						if(totalMusicList[j].contains(aux[1])){
 							pos = j;
-							//m = musicas[j].clone();
-							j = musicas.length;
+							j = totalMusicList.length;
 						}
 					}
-					lista.inserirInicio(musicas[pos]);
+					Musica m = cadastra(totalMusicList[pos]);
+					lista.inserirInicio(m);
 				}
 				if(in.charAt(1) == 'F'){
-					for(int j = 0;j < musicas.length;j++){
-						if(aux[1].equals(musicas[j].getId())){
+					for(int j = 0;j < totalMusicList.length;j++){
+						if(totalMusicList[j].contains(aux[1])){
 							pos = j;
-							//m = musicas[j].clone();
-							j = musicas.length;
+							j = totalMusicList.length;
 						}
 					}
-					lista.inserirFim(musicas[pos]);
+					Musica m = cadastra(totalMusicList[pos]);
+					lista.inserirFim(m);
 				}
 				if(in.charAt(1) == '*'){
-					for(int j = 0;j < musicas.length;j++){
-						if(aux[2].equals(musicas[j].getId())){
+					for(int j = 0;j < totalMusicList.length;j++){
+						if(totalMusicList[j].contains(aux[2])){
 							pos = j;
-							//m = musicas[j].clone();
-							j = musicas.length;
+							j = totalMusicList.length;
 						}
 					}
-					lista.inserir(musicas[pos],Integer.parseInt(aux[1]));
+					Musica m = cadastra(totalMusicList[pos]);
+					lista.inserir(m,Integer.parseInt(aux[1]));
 				}
 			}
 			if(in.charAt(0) == 'R'){
