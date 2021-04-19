@@ -260,7 +260,7 @@ class FilaCircularLinear{
 	//Construtores
 	//-------------------------------------------------------------
 	public FilaCircularLinear(){
-		this(5);
+		this(6);
 	}
 	public FilaCircularLinear(int tamanho){
 		musicas = new Musica[tamanho];
@@ -270,14 +270,15 @@ class FilaCircularLinear{
 	//Inserir
 	//-------------------------------------------------------------
 	public void inserir(Musica m)throws Exception{
-		if(((ultimo + 1) % musicas.length) == primeiro)
+		if(((ultimo + 1) % musicas.length) == primeiro){
 			remover();
-		
+		}
+
         musicas[ultimo] = m.clone();
 		ultimo = (ultimo + 1) % musicas.length;
         cont++;
 
-        int soma = 0;
+        float soma = 0;
         float media;
         for(int i = primeiro;i != ultimo;i = ((i + 1) % musicas.length)){
             soma += musicas[i].getDuration();
@@ -289,15 +290,15 @@ class FilaCircularLinear{
 	//-------------------------------------------------------------
 	//Remover
 	//-------------------------------------------------------------
-	public void remover()throws Exception{
+	public Musica remover()throws Exception{
 		if(primeiro == ultimo)
 			throw new Exception("Erro!");
 		
 		Musica m = musicas[primeiro];
 		primeiro = (primeiro + 1) % musicas.length;
 
-		MyIO.println("(R) " + m.getNome());
         cont--;
+		return m;
 	}
 	//-------------------------------------------------------------
 	//Mostrar
@@ -315,6 +316,8 @@ class FilaCircularLinear{
 }
 
 class FilaCircular{
+
+	final static BufferedReader nt = new BufferedReader(new InputStreamReader(System.in));
 
     public static Musica cadastra(String dadosMusica) throws ParseException {
 		int tamanhoString = 19;
@@ -352,14 +355,13 @@ class FilaCircular{
 	}
 
 	public static int entradaPadrao(String ids[]) throws IOException {
-		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 		int i = 0;
 
-		String linha = in.readLine();
+		String linha = nt.readLine();
 		while (!(linha.contains("FIM"))) {
 			ids[i] = linha;
 			i++;
-			linha = in.readLine();
+			linha = nt.readLine();
 		}
 		return i;
 	}
@@ -382,6 +384,13 @@ class FilaCircular{
 		return totalMusicList;
 	}
 
+	public static boolean isInserir(char c){
+		return c == 'I';
+	}
+	public static boolean isRemover(char c){
+		return c == 'R';
+	}
+
 	public static void main(String args[]) throws Exception {
 
 		String ids[] = new String[500];
@@ -390,15 +399,21 @@ class FilaCircular{
 		String totalMusicList[] = ler();
 		Musica musicas[] = montarClasse(playlistTam, ids, totalMusicList);
 
-		int n = MyIO.readInt();
-
 		FilaCircularLinear fila = new FilaCircularLinear();
+
+		for(int i = 0;i < musicas.length;i++){
+			fila.inserir(musicas[i]);
+		}
+
+		String x = nt.readLine();
+		int n = Integer.parseInt(x);
+
 		for(int i = 0;i < n;i++){
-			String in = MyIO.readLine();
+			String in = nt.readLine();
 			int pos = 0;
-			if(in.charAt(0) == 'I'){
-                
-                //Separar Id do Inserir
+			if(isInserir(in.charAt(0))){
+                //---------------------------------------
+				//Separar Id do Inserir
                 //---------------------------------------
                 String id = "";
                 for(int h = 2;h < in.length();h++){
@@ -406,14 +421,18 @@ class FilaCircular{
                 }
                 //---------------------------------------
 
-				for(int j = 0;j < musicas.length;j++){
-                    if(id.equals(musicas[j].getId()))
-                        pos = j;
-                }
-                fila.inserir(musicas[pos]);
+				for(int j = 0;j < totalMusicList.length;j++){
+					if(totalMusicList[j].contains(id)){
+						pos = j;
+						j = totalMusicList.length;
+					}
+				}
+				Musica m = cadastra(totalMusicList[pos]);
+				fila.inserir(m);
 			}
-			if(in.charAt(0) == 'R'){
-				fila.remover();
+			if(isRemover(in.charAt(0))){
+				Musica m = fila.remover();
+				MyIO.println("(R) " + m.getNome());
 			}
 		}
 	}

@@ -356,8 +356,8 @@ class Pilha{
 	public static String[] ler() throws Exception {
 		final int TOTAL_MUSIC_NUMBER = 170625;
 		String totalMusicList[] = new String[TOTAL_MUSIC_NUMBER];
-		//FileReader arquivo = new FileReader("data.csv"); // Teste interno
-		FileReader arquivo = new FileReader("/tmp/data.csv"); // Mandar para o VERDE
+		FileReader arquivo = new FileReader("data.csv"); // Teste interno
+		//FileReader arquivo = new FileReader("/tmp/data.csv"); // Mandar para o VERDE
 		BufferedReader ler = new BufferedReader(arquivo);
 		String linha = ler.readLine();
 		linha = ler.readLine();
