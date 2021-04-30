@@ -270,46 +270,47 @@ class Celula{
 class PilhaFlexivelSimples{
 
 	private Celula topo;
+    private Celula fundo;
     //-------------------------------------------------------------
 	//Construtor
 	//-------------------------------------------------------------
     public PilhaFlexivelSimples(){
         topo = new Celula();
+        fundo = topo;
     }
     //-------------------------------------------------------------
-	//Inserir 
+	//Inserir
 	//-------------------------------------------------------------
     public void inserir(Musica m){
-        Celula tmp = new Celula(m);
-        tmp.prox = topo.prox;
-        topo.prox = tmp;
-        tmp = null;
+        fundo.prox = new Celula(m);
+        fundo = fundo.prox;
     }
     //-------------------------------------------------------------
-	//Remover 
+	//Remover
 	//-------------------------------------------------------------
     public void remover()throws Exception{
         if(isVazio())
             throw new Exception("Erro!");
         
-        Celula tmp = topo;
-        topo = topo.prox;
-        Musica m = topo.musica;
-        tmp.prox = null;
-        tmp = null;
+        Celula i = topo;
+        for(;i.prox != fundo;i = i.prox);
+
+        Musica m = fundo.musica;
+        fundo = i;
+        i = fundo.prox = null;
 
         MyIO.println("(R) " + m.getNome());
     }
     //-------------------------------------------------------------
     //isVazio()
     //-------------------------------------------------------------
-    private boolean isVazio(){ return topo.prox == null; }
+    private boolean isVazio(){ return topo == fundo; }
     //-------------------------------------------------------------
 	//Mostrar
 	//-------------------------------------------------------------
     public void mostrar(){
         int cont = 0;
-        for(Celula i = topo.prox;i != null;i = i.prox, cont++){
+        for(Celula i = topo.prox;i != fundo;i = i.prox, cont++){
             MyIO.print("[" + cont + "] ");
             i.musica.imprimir();
             MyIO.print("\n");
@@ -372,8 +373,8 @@ class PilhaFlexivel{
 	public static String[] ler() throws Exception {
 		final int TOTAL_MUSIC_NUMBER = 170625;
 		String totalMusicList[] = new String[TOTAL_MUSIC_NUMBER];
-		//FileReader arquivo = new FileReader("data.csv"); // Teste interno
-		FileReader arquivo = new FileReader("/tmp/data.csv"); // Mandar para o VERDE
+		FileReader arquivo = new FileReader("data.csv"); // Teste interno
+		//FileReader arquivo = new FileReader("/tmp/data.csv"); // Mandar para o VERDE
 		BufferedReader ler = new BufferedReader(arquivo);
 		String linha = ler.readLine();
 		linha = ler.readLine();
