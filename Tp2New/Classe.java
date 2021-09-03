@@ -61,8 +61,8 @@ class Serie{
     public void setNumTemp(int numTemp){ this.numTemp = numTemp; }
     public int getNumTemp(){ return this.numTemp; }
     
-    public void getNumEp(int numEp){ this.numEp = numEp; }
-    public int setNumEp(){ return this.numEp; }
+    public void setNumEp(int numEp){ this.numEp = numEp; }
+    public int getNumEp(){ return this.numEp; }
     //------------------------------------------------------------------------------
     //Clone/Ler
     public Serie clone(){
@@ -78,9 +78,186 @@ class Serie{
         novo.numEp = this.numEp;
         return novo;
     }
+    
     public void ler(String nomeArq){
+        Arq.openRead(nomeArq);
+        String in;
+        String resp = "";
 
+        while(Arq.hasNext()){
+            in = Arq.readLine();
+            if(in.contains("<title>")){
+                boolean aberto = true;
+                for(int i = 0;i < in.length();i++){
+                    if(in.charAt(i) == '<'){
+                        aberto = false;
+                    }else if(in.charAt(i-1) == '>'){
+                        aberto = true;
+                    }
+                    if(aberto){
+                        resp += in.charAt(i);
+                    }
+                }
+                String aux[] = resp.split(" – ");
+                setFormato(aux[0]);
+            }
+        }
+
+        while(Arq.hasNext()){
+            in = Arq.readLine();
+            if(in.contains("Formato")){
+                in = Arq.readLine();
+                boolean aberto = true;
+                for(int i = 0;i < in.length();i++){
+                    if(in.charAt(i) == '<'){
+                        aberto = false;
+                    }else if(in.charAt(i-1) == '>'){
+                        aberto = true;
+                    }
+                    if(aberto){
+                        resp += in.charAt(i);
+                    }
+                }
+                setFormato(resp);
+            }
+        }
+
+        while(Arq.hasNext()){
+            in = Arq.readLine();
+            if(in.contains("Duração")){
+                in = Arq.readLine();
+                boolean aberto = true;
+                for(int i = 0;i < in.length();i++){
+                    if(in.charAt(i) == '<'){
+                        aberto = false;
+                    }else if(in.charAt(i-1) == '>'){
+                        aberto = true;
+                    }
+                    if(aberto){
+                        resp += in.charAt(i);
+                    }
+                }
+                setDuracao(resp);
+            }
+        }
+
+        while(Arq.hasNext()){
+            in = Arq.readLine();
+            if(in.contains("País de origem")){
+                in = Arq.readLine();
+                boolean aberto = true;
+                for(int i = 0;i < in.length();i++){
+                    if(in.charAt(i) == '<'){
+                        aberto = false;
+                    }else if(in.charAt(i-1) == '>'){
+                        aberto = true;
+                    }
+                    if(aberto){
+                        resp += in.charAt(i);
+                    }
+                }
+                setPaisOrigem(resp);
+            }
+        }
+
+        while(Arq.hasNext()){
+            in = Arq.readLine();
+            if(in.contains("Idioma original")){
+                in = Arq.readLine();
+                boolean aberto = true;
+                for(int i = 0;i < in.length();i++){
+                    if(in.charAt(i) == '<'){
+                        aberto = false;
+                    }else if(in.charAt(i-1) == '>'){
+                        aberto = true;
+                    }
+                    if(aberto){
+                        resp += in.charAt(i);
+                    }
+                }
+                setIdiomaOrigem(resp);
+            }
+        }
+
+        while(Arq.hasNext()){
+            in = Arq.readLine();
+            if(in.contains("Emissora de televisão original")){
+                in = Arq.readLine();
+                boolean aberto = true;
+                for(int i = 0;i < in.length();i++){
+                    if(in.charAt(i) == '<'){
+                        aberto = false;
+                    }else if(in.charAt(i-1) == '>'){
+                        aberto = true;
+                    }
+                    if(aberto){
+                        resp += in.charAt(i);
+                    }
+                }
+                setEmissoraTV(resp);
+            }
+        }
+
+        while(Arq.hasNext()){
+            in = Arq.readLine();
+            if(in.contains("Transmissão original")){
+                in = Arq.readLine();
+                boolean aberto = true;
+                for(int i = 0;i < in.length();i++){
+                    if(in.charAt(i) == '<'){
+                        aberto = false;
+                    }else if(in.charAt(i-1) == '>'){
+                        aberto = true;
+                    }
+                    if(aberto){
+                        resp += in.charAt(i);
+                    }
+                }
+                setTransmissaoOrigem(resp);
+            }
+        }
+
+        while(Arq.hasNext()){
+            in = Arq.readLine();
+            if(in.contains("N.º de temporadas")){
+                in = Arq.readLine();
+                boolean aberto = true;
+                for(int i = 0;i < in.length();i++){
+                    if(in.charAt(i) == '<'){
+                        aberto = false;
+                    }else if(in.charAt(i-1) == '>'){
+                        aberto = true;
+                    }
+                    if(aberto){
+                        resp += in.charAt(i);
+                    }
+                }
+                setNumTemp(Integer.parseInt(resp));
+            }
+        }
+
+        while(Arq.hasNext()){
+            in = Arq.readLine();
+            if(in.contains("N.º de episódios")){
+                in = Arq.readLine();
+                boolean aberto = true;
+                for(int i = 0;i < in.length();i++){
+                    if(in.charAt(i) == '<'){
+                        aberto = false;
+                    }else if(in.charAt(i-1) == '>'){
+                        aberto = true;
+                    }
+                    if(aberto){
+                        resp += in.charAt(i);
+                    }
+                }
+                setNumEp(Integer.parseInt(resp));
+            }
+        }
+        
+        Arq.close();
     }
+
     //------------------------------------------------------------------------------
     //Imprimir
     public void imprimir(){
@@ -91,7 +268,7 @@ class Serie{
 
 class Classe{
     public static void main(String args[]){
-        Serie series[];
+        Serie series[] = new Serie[61];
         int cont = 0;
         String nomeArq = MyIO.readLine();
         while(!(nomeArq.contains("FIM"))){
