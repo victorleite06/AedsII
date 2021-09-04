@@ -80,9 +80,9 @@ class Serie{
     }
     
     public void ler(String Arqu){
-        //String nomeArq = "/temp/series/" + Arqu; // Verde
-        String nomeArq = Arqu; // Teste
-        
+        String nomeArq = "/tmp/series/" + Arqu; // Verde
+        //String nomeArq = Arqu; // Teste
+
         String in;
         String resp = "";
 
@@ -135,11 +135,10 @@ class Serie{
         resp = "";
         while(Arq.hasNext()){
             in = Arq.readLine();
-            String cond = ">Dura"+(char)(135)+(char)(198)+"o<";
+            //String cond = ">Dura"+(char)(135)+(char)(198)+"o<";
             //if(in.contains(">Duração<")){
             //if(in.contains(">Dura"+(char)(135)+(char)(198)+"o<")){
-            //if(in.contains(">Dura")){
-            if(in.contains(cond)){
+            if(in.contains(">Dura")){
                 in = Arq.readLine();
                 boolean aberto = false;
                 for(int i = 0;i < in.length();i++){
@@ -153,7 +152,7 @@ class Serie{
                     }
                 }
                 String aux = "";
-                for(int j = 2;j < resp.length()-2;j++){
+                for(int j = 1;j < resp.length()-1;j++){
                     if(resp.charAt(j) != '<' && resp.charAt(j) != '>'){
                         aux += resp.charAt(j);
                     }
@@ -296,7 +295,7 @@ class Serie{
         }
         Arq.close();
 
-        Arq.openRead(nomeArq);
+        /*Arq.openRead(nomeArq);
         resp = "";
         while(Arq.hasNext()){
             in = Arq.readLine();
@@ -360,13 +359,13 @@ class Serie{
                 setNumEp(Integer.parseInt(aux));
             }
         }
-        Arq.close();
+        Arq.close();*/
     }
 
     //------------------------------------------------------------------------------
     //Imprimir
     public void imprimir(){
-        MyIO.println(nome + " " + formato + " " + duracao + " " + paisOrigem + " " + idiomaOrigem + " " + emissoraTV + " " + trasmissaoOriginal + " " + numTemp + " " + numEp + "\n");
+        MyIO.print(nome + " " + formato + " " + duracao + " " + paisOrigem + " " + idiomaOrigem + " " + emissoraTV + " " + trasmissaoOriginal + " " + numTemp + " " + numEp + "\n");
     }
     //------------------------------------------------------------------------------
 }
