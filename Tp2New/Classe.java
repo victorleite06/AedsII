@@ -79,189 +79,294 @@ class Serie{
         return novo;
     }
     
-    public void ler(String nomeArq){
-        Arq.openRead(nomeArq);
+    public void ler(String Arqu){
+        //String nomeArq = "/temp/series/" + Arqu; // Verde
+        String nomeArq = Arqu; // Teste
+        
         String in;
         String resp = "";
 
+        Arq.openRead(nomeArq);
         while(Arq.hasNext()){
             in = Arq.readLine();
-            if(in.contains("<title>")){
-                boolean aberto = true;
+            if(in.contains("firstHeading")){
                 for(int i = 0;i < in.length();i++){
-                    if(in.charAt(i) == '<'){
-                        aberto = false;
-                    }else if(in.charAt(i-1) == '>'){
-                        aberto = true;
-                    }
-                    if(aberto){
-                        resp += in.charAt(i);
+                    if(in.charAt(i) == '<' && in.charAt(i+1) == 'i' && in.charAt(i+2) == '>'){
+                        int k = i+3;
+                        for(;k < in.length() && in.charAt(k) != '<';k++){
+                            resp += in.charAt(k);
+                        }
                     }
                 }
-                String aux[] = resp.split(" – ");
-                setFormato(aux[0]);
+                setNome(resp);
             }
         }
-
-        while(Arq.hasNext()){
-            in = Arq.readLine();
-            if(in.contains("Formato")){
-                in = Arq.readLine();
-                boolean aberto = true;
-                for(int i = 0;i < in.length();i++){
-                    if(in.charAt(i) == '<'){
-                        aberto = false;
-                    }else if(in.charAt(i-1) == '>'){
-                        aberto = true;
-                    }
-                    if(aberto){
-                        resp += in.charAt(i);
-                    }
-                }
-                setFormato(resp);
-            }
-        }
-
-        while(Arq.hasNext()){
-            in = Arq.readLine();
-            if(in.contains("Duração")){
-                in = Arq.readLine();
-                boolean aberto = true;
-                for(int i = 0;i < in.length();i++){
-                    if(in.charAt(i) == '<'){
-                        aberto = false;
-                    }else if(in.charAt(i-1) == '>'){
-                        aberto = true;
-                    }
-                    if(aberto){
-                        resp += in.charAt(i);
-                    }
-                }
-                setDuracao(resp);
-            }
-        }
-
-        while(Arq.hasNext()){
-            in = Arq.readLine();
-            if(in.contains("País de origem")){
-                in = Arq.readLine();
-                boolean aberto = true;
-                for(int i = 0;i < in.length();i++){
-                    if(in.charAt(i) == '<'){
-                        aberto = false;
-                    }else if(in.charAt(i-1) == '>'){
-                        aberto = true;
-                    }
-                    if(aberto){
-                        resp += in.charAt(i);
-                    }
-                }
-                setPaisOrigem(resp);
-            }
-        }
-
-        while(Arq.hasNext()){
-            in = Arq.readLine();
-            if(in.contains("Idioma original")){
-                in = Arq.readLine();
-                boolean aberto = true;
-                for(int i = 0;i < in.length();i++){
-                    if(in.charAt(i) == '<'){
-                        aberto = false;
-                    }else if(in.charAt(i-1) == '>'){
-                        aberto = true;
-                    }
-                    if(aberto){
-                        resp += in.charAt(i);
-                    }
-                }
-                setIdiomaOrigem(resp);
-            }
-        }
-
-        while(Arq.hasNext()){
-            in = Arq.readLine();
-            if(in.contains("Emissora de televisão original")){
-                in = Arq.readLine();
-                boolean aberto = true;
-                for(int i = 0;i < in.length();i++){
-                    if(in.charAt(i) == '<'){
-                        aberto = false;
-                    }else if(in.charAt(i-1) == '>'){
-                        aberto = true;
-                    }
-                    if(aberto){
-                        resp += in.charAt(i);
-                    }
-                }
-                setEmissoraTV(resp);
-            }
-        }
-
-        while(Arq.hasNext()){
-            in = Arq.readLine();
-            if(in.contains("Transmissão original")){
-                in = Arq.readLine();
-                boolean aberto = true;
-                for(int i = 0;i < in.length();i++){
-                    if(in.charAt(i) == '<'){
-                        aberto = false;
-                    }else if(in.charAt(i-1) == '>'){
-                        aberto = true;
-                    }
-                    if(aberto){
-                        resp += in.charAt(i);
-                    }
-                }
-                setTransmissaoOrigem(resp);
-            }
-        }
-
-        while(Arq.hasNext()){
-            in = Arq.readLine();
-            if(in.contains("N.º de temporadas")){
-                in = Arq.readLine();
-                boolean aberto = true;
-                for(int i = 0;i < in.length();i++){
-                    if(in.charAt(i) == '<'){
-                        aberto = false;
-                    }else if(in.charAt(i-1) == '>'){
-                        aberto = true;
-                    }
-                    if(aberto){
-                        resp += in.charAt(i);
-                    }
-                }
-                setNumTemp(Integer.parseInt(resp));
-            }
-        }
-
-        while(Arq.hasNext()){
-            in = Arq.readLine();
-            if(in.contains("N.º de episódios")){
-                in = Arq.readLine();
-                boolean aberto = true;
-                for(int i = 0;i < in.length();i++){
-                    if(in.charAt(i) == '<'){
-                        aberto = false;
-                    }else if(in.charAt(i-1) == '>'){
-                        aberto = true;
-                    }
-                    if(aberto){
-                        resp += in.charAt(i);
-                    }
-                }
-                setNumEp(Integer.parseInt(resp));
-            }
-        }
+        Arq.close();
         
+        Arq.openRead(nomeArq);
+        resp = "";
+        while(Arq.hasNext()){
+            in = Arq.readLine();
+            if(in.contains("Formato<")){
+                in = Arq.readLine();
+                boolean aberto = false;
+                for(int i = 0;i < in.length();i++){
+                    if(in.charAt(i) == '<'){
+                        aberto = true;
+                    }else if(in.charAt(i) == '>'){
+                        aberto = false;
+                    }
+                    if(!aberto){
+                        resp += in.charAt(i);
+                    }
+                }
+                String aux = "";
+                for(int j = 2;j < resp.length()-2;j++){
+                    if(resp.charAt(j) != '<' && resp.charAt(j) != '>'){
+                        aux += resp.charAt(j);
+                    }
+                }
+                setFormato(aux);
+            }
+        }
+        Arq.close();
+
+        Arq.openRead(nomeArq);
+        resp = "";
+        while(Arq.hasNext()){
+            in = Arq.readLine();
+            String cond = ">Dura"+(char)(135)+(char)(198)+"o<";
+            //if(in.contains(">Duração<")){
+            //if(in.contains(">Dura"+(char)(135)+(char)(198)+"o<")){
+            //if(in.contains(">Dura")){
+            if(in.contains(cond)){
+                in = Arq.readLine();
+                boolean aberto = false;
+                for(int i = 0;i < in.length();i++){
+                    if(in.charAt(i) == '<'){
+                        aberto = true;
+                    }else if(in.charAt(i) == '>'){
+                        aberto = false;
+                    }
+                    if(!aberto){
+                        resp += in.charAt(i);
+                    }
+                }
+                String aux = "";
+                for(int j = 2;j < resp.length()-2;j++){
+                    if(resp.charAt(j) != '<' && resp.charAt(j) != '>'){
+                        aux += resp.charAt(j);
+                    }
+                }
+                setDuracao(aux);
+            }
+        }
+        Arq.close();
+
+        Arq.openRead(nomeArq);
+        resp = "";
+        while(Arq.hasNext()){
+            in = Arq.readLine();
+            //if(in.contains("País de origem<")){
+            if(in.contains("s de origem<")){
+                in = Arq.readLine();
+                boolean aberto = false;
+                for(int i = 0;i < in.length();i++){
+                    if(in.charAt(i) == '<'){
+                        aberto = true;
+                    }else if(in.charAt(i) == '>'){
+                        aberto = false;
+                    }
+                    if(!aberto){
+                        resp += in.charAt(i);
+                    }
+                }
+                String aux = "";
+                boolean pontoVirg = false;
+                for(int j = 2;j < resp.length()-1;j++){
+                    if(resp.charAt(j) == ';'){
+                        pontoVirg = true;
+                        j += 2;
+                    }
+                    if(pontoVirg){
+                        if(resp.charAt(j) != '<' && resp.charAt(j) != '>'){
+                            aux += resp.charAt(j);
+                        }
+                    }
+                }
+                setPaisOrigem(aux);
+            }
+        }
+        Arq.close();
+
+        Arq.openRead(nomeArq);
+        resp = "";
+        while(Arq.hasNext()){
+            in = Arq.readLine();
+            if(in.contains("Idioma original<")){
+                in = Arq.readLine();
+                boolean aberto = false;
+                for(int i = 0;i < in.length();i++){
+                    if(in.charAt(i) == '<'){
+                        aberto = true;
+                    }else if(in.charAt(i) == '>'){
+                        aberto = false;
+                    }
+                    if(!aberto){
+                        resp += in.charAt(i);
+                    }
+                }
+                String aux = "";
+                for(int j = 2;j < resp.length()-2;j++){
+                    if(resp.charAt(j) != '<' && resp.charAt(j) != '>'){
+                        aux += resp.charAt(j);
+                    }
+                }
+                setIdiomaOrigem(aux);
+            }
+        }
+        Arq.close();
+
+        Arq.openRead(nomeArq);
+        resp = "";
+        while(Arq.hasNext()){
+            in = Arq.readLine();
+            //if(in.contains("Emissora de televisão original<")){
+            if(in.contains("Emissora de televis") && in.contains("original<")){
+                in = Arq.readLine();
+                boolean aberto = false;
+                for(int i = 0;i < in.length();i++){
+                    if(in.charAt(i) == '<'){
+                        aberto = true;
+                    }else if(in.charAt(i) == '>'){
+                        aberto = false;
+                    }
+                    if(!aberto){
+                        resp += in.charAt(i);
+                    }
+                }
+                String aux = "";
+                for(int j = 2;j < resp.length()-2;j++){
+                    if(resp.charAt(j) != '<' && resp.charAt(j) != '>'){
+                        aux += resp.charAt(j);
+                    }
+                }
+                setEmissoraTV(aux);
+            }
+        }
+        Arq.close();
+
+        Arq.openRead(nomeArq);
+        resp = "";
+        while(Arq.hasNext()){
+            in = Arq.readLine();
+            //if(in.contains("Transmissão original<")){
+            if(in.contains("Transmiss") && in.contains("original<")){
+                in = Arq.readLine();
+                boolean aberto = false;
+                for(int i = 0;i < in.length();i++){
+                    if(in.charAt(i) == '<'){
+                        aberto = true;
+                    }else if(in.charAt(i) == '>'){
+                        aberto = false;
+                    }
+                    if(!aberto){
+                        resp += in.charAt(i);
+                    }
+                }
+                String aux = "";
+                String aux1[] = resp.split("&#160;");
+                String aux2 = "";
+                for(int l = 0;l < aux1.length;l++){
+                    if(l == 1){
+                        for(int k = 10;k < aux1[l].length();k++){
+                            aux += aux1[l].charAt(k);
+                        }
+                    }else{
+                    aux += aux1[l];
+                    }
+                }
+                for(int j = 0;j < aux.length()-1;j++){
+                    if(aux.charAt(j) != '<' && aux.charAt(j) != '>' && aux.charAt(j) != '(' && aux.charAt(j) != ')'){
+                        aux2 += resp.charAt(j);
+                    }
+                }
+                setTransmissaoOrigem(aux2);
+            }
+        }
+        Arq.close();
+
+        Arq.openRead(nomeArq);
+        resp = "";
+        while(Arq.hasNext()){
+            in = Arq.readLine();
+            //if(in.contains("N.º de temporadas<")){
+            if(in.contains(" de temporadas<")){
+                in = Arq.readLine();
+                boolean aberto = false;
+                for(int i = 0;i < in.length();i++){
+                    if(in.charAt(i) == '<'){
+                        aberto = true;
+                    }else if(in.charAt(i) == '>'){
+                        aberto = false;
+                    }
+                    if(!aberto){
+                        resp += in.charAt(i);
+                    }
+                }
+                String aux = "";
+                if(resp != ""){
+                    for(int j = 1;j < resp.length()-1;j++){
+                        if(resp.charAt(j) != '<' && resp.charAt(j) != '>'){
+                            aux += resp.charAt(j);
+                        }
+                    }
+                }else{
+                    aux = "0";
+                }
+                setNumTemp(Integer.parseInt(aux));
+            }
+        }
+        Arq.close();
+
+        Arq.openRead(nomeArq);
+        resp = "";
+        while(Arq.hasNext()){
+            in = Arq.readLine();
+            //if(in.contains("N.º de episódios<")){
+            if(in.contains(" de episódios<")){
+                in = Arq.readLine();
+                boolean aberto = false;
+                for(int i = 0;i < in.length();i++){
+                    if(in.charAt(i) == '<'){
+                        aberto = true;
+                    }else if(in.charAt(i) == '>'){
+                        aberto = false;
+                    }
+                    if(!aberto){
+                        resp += in.charAt(i);
+                    }
+                }
+                String aux = "";
+                if(resp != ""){
+                    for(int j = 1;j < resp.length()-1;j++){
+                        if(resp.charAt(j) != '<' && resp.charAt(j) != '>'){
+                            aux += resp.charAt(j);
+                        }
+                    }
+                }else{
+                    aux = "0";
+                }
+                setNumEp(Integer.parseInt(aux));
+            }
+        }
         Arq.close();
     }
 
     //------------------------------------------------------------------------------
     //Imprimir
     public void imprimir(){
-        MyIO.print(nome + " " + formato + " " + duracao + " " + paisOrigem + " " + idiomaOrigem + " " + emissoraTV + " " + trasmissaoOriginal + " " + numTemp + " " + numEp + "\n");
+        MyIO.println(nome + " " + formato + " " + duracao + " " + paisOrigem + " " + idiomaOrigem + " " + emissoraTV + " " + trasmissaoOriginal + " " + numTemp + " " + numEp + "\n");
     }
     //------------------------------------------------------------------------------
 }
