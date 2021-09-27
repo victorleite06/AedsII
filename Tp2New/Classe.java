@@ -1,5 +1,5 @@
 import java.io.*;
-import java.net.*;
+import java.io.FileReader;
 
 class Serie{
     private String nome;
@@ -80,286 +80,84 @@ class Serie{
     }
     
     public void ler(String Arqu){
-        String nomeArq = "/tmp/series/" + Arqu; // Verde
-        //String nomeArq = Arqu; // Teste
+        //String nomeArq = "/tmp/series/" + Arqu; // Verde
+        String nomeArq = Arqu; // Teste
 
-        String in;
+        try{
+            FileReader arq = new FileReader(nomeArq);
+            BufferedReader ler = new BufferedReader(arq);
+
+            this.nome = procurarNome(Arqu);
+
+            while(!(ler.readLine().contains("Formato")));
+            this.formato = removerTags(ler.readLine());
+
+            while(!(ler.readLine().contains("Duração")));
+            this.duracao = removerTags(ler.readLine());
+
+            while(!(ler.readLine().contains("País de origem")));
+            this.paisOrigem = removerTags(ler.readLine());
+
+            while(!(ler.readLine().contains("Idioma original")));
+            this.idiomaOrigem = removerTags(ler.readLine());
+
+            while(!(ler.readLine().contains("Emissora de televisão")));
+            this.emissoraTV = removerTags(ler.readLine());
+
+            while(!(ler.readLine().contains("Transmissão original")));
+            this.trasmissaoOriginal = removerTags(ler.readLine());
+
+            while(!(ler.readLine().contains("N.º de temporadas")));
+            this.numTemp = retornarInt(removerTags(ler.readLine()));
+
+            while(!(ler.readLine().contains("N.º de episódios")));
+            this.numEp = retornarInt(removerTags(ler.readLine()));
+
+            ler.close();
+        }catch(FileNotFoundException e){
+            System.out.println("Erro em abrir file " + nomeArq);
+        }catch(IOException e){
+            System.out.println("Erro em ler file" + nomeArq);
+        }
+    }
+
+    private String procurarNome(String Arqu){
+        String nome = "";
+        for(int i = 0;i < Arqu.length();i++){
+            if(Arqu.charAt(i) == '_')
+                nome += ' ';
+            else
+                nome += Arqu.charAt(i);
+        }
+        return nome.substring(0, nome.length()-5);
+    }
+    private String removerTags(String in){
         String resp = "";
-
-        Arq.openRead(nomeArq);
-        while(Arq.hasNext()){
-            in = Arq.readLine();
-            if(in.contains("firstHeading")){
-                for(int i = 0;i < in.length();i++){
-                    if(in.charAt(i) == '<' && in.charAt(i+1) == 'i' && in.charAt(i+2) == '>'){
-                        int k = i+3;
-                        for(;k < in.length() && in.charAt(k) != '<';k++){
-                            resp += in.charAt(k);
-                        }
-                    }
-                }
-                setNome(resp);
+        for(int i = 0;i < in.length();i++){
+            if(in.charAt(i) == '<'){
+                i++;
+                while(in.charAt(i) != '>')
+                    i++;
+            }else if(in.charAt(i) == '&'){
+                i++;
+                while(in.charAt(i) != ';')
+                    i++;
+            }else{
+                resp += in.charAt(i);
             }
         }
-        Arq.close();
-        
-        Arq.openRead(nomeArq);
-        resp = "";
-        while(Arq.hasNext()){
-            in = Arq.readLine();
-            if(in.contains("Formato<")){
-                in = Arq.readLine();
-                boolean aberto = false;
-                for(int i = 0;i < in.length();i++){
-                    if(in.charAt(i) == '<'){
-                        aberto = true;
-                    }else if(in.charAt(i) == '>'){
-                        aberto = false;
-                    }
-                    if(!aberto){
-                        resp += in.charAt(i);
-                    }
-                }
-                String aux = "";
-                for(int j = 2;j < resp.length()-2;j++){
-                    if(resp.charAt(j) != '<' && resp.charAt(j) != '>'){
-                        aux += resp.charAt(j);
-                    }
-                }
-                setFormato(aux);
+        return resp;
+    }
+    private int retornarInt(String in){
+        String resp = "";
+        for(int i = 0;i < in.length();i++){
+            if(in.charAt(i) >= '0' && in.charAt(i) <= '9'){
+                resp += in.charAt(i);
+            }else{
+                i = in.length();
             }
         }
-        Arq.close();
-
-        Arq.openRead(nomeArq);
-        resp = "";
-        while(Arq.hasNext()){
-            in = Arq.readLine();
-            //String cond = ">Dura"+(char)(135)+(char)(198)+"o<";
-            //if(in.contains(">Duração<")){
-            //if(in.contains(">Dura"+(char)(135)+(char)(198)+"o<")){
-            if(in.contains(">Dura")){
-                in = Arq.readLine();
-                boolean aberto = false;
-                for(int i = 0;i < in.length();i++){
-                    if(in.charAt(i) == '<'){
-                        aberto = true;
-                    }else if(in.charAt(i) == '>'){
-                        aberto = false;
-                    }
-                    if(!aberto){
-                        resp += in.charAt(i);
-                    }
-                }
-                String aux = "";
-                for(int j = 1;j < resp.length()-1;j++){
-                    if(resp.charAt(j) != '<' && resp.charAt(j) != '>'){
-                        aux += resp.charAt(j);
-                    }
-                }
-                setDuracao(aux);
-            }
-        }
-        Arq.close();
-
-        Arq.openRead(nomeArq);
-        resp = "";
-        while(Arq.hasNext()){
-            in = Arq.readLine();
-            //if(in.contains("País de origem<")){
-            if(in.contains("s de origem<")){
-                in = Arq.readLine();
-                boolean aberto = false;
-                for(int i = 0;i < in.length();i++){
-                    if(in.charAt(i) == '<'){
-                        aberto = true;
-                    }else if(in.charAt(i) == '>'){
-                        aberto = false;
-                    }
-                    if(!aberto){
-                        resp += in.charAt(i);
-                    }
-                }
-                String aux = "";
-                boolean pontoVirg = false;
-                for(int j = 2;j < resp.length()-1;j++){
-                    if(resp.charAt(j) == ';'){
-                        pontoVirg = true;
-                        j += 2;
-                    }
-                    if(pontoVirg){
-                        if(resp.charAt(j) != '<' && resp.charAt(j) != '>'){
-                            aux += resp.charAt(j);
-                        }
-                    }
-                }
-                setPaisOrigem(aux);
-            }
-        }
-        Arq.close();
-
-        Arq.openRead(nomeArq);
-        resp = "";
-        while(Arq.hasNext()){
-            in = Arq.readLine();
-            if(in.contains("Idioma original<")){
-                in = Arq.readLine();
-                boolean aberto = false;
-                for(int i = 0;i < in.length();i++){
-                    if(in.charAt(i) == '<'){
-                        aberto = true;
-                    }else if(in.charAt(i) == '>'){
-                        aberto = false;
-                    }
-                    if(!aberto){
-                        resp += in.charAt(i);
-                    }
-                }
-                String aux = "";
-                for(int j = 2;j < resp.length()-2;j++){
-                    if(resp.charAt(j) != '<' && resp.charAt(j) != '>'){
-                        aux += resp.charAt(j);
-                    }
-                }
-                setIdiomaOrigem(aux);
-            }
-        }
-        Arq.close();
-
-        Arq.openRead(nomeArq);
-        resp = "";
-        while(Arq.hasNext()){
-            in = Arq.readLine();
-            //if(in.contains("Emissora de televisão original<")){
-            if(in.contains("Emissora de televis") && in.contains("original<")){
-                in = Arq.readLine();
-                boolean aberto = false;
-                for(int i = 0;i < in.length();i++){
-                    if(in.charAt(i) == '<'){
-                        aberto = true;
-                    }else if(in.charAt(i) == '>'){
-                        aberto = false;
-                    }
-                    if(!aberto){
-                        resp += in.charAt(i);
-                    }
-                }
-                String aux = "";
-                for(int j = 2;j < resp.length()-2;j++){
-                    if(resp.charAt(j) != '<' && resp.charAt(j) != '>'){
-                        aux += resp.charAt(j);
-                    }
-                }
-                setEmissoraTV(aux);
-            }
-        }
-        Arq.close();
-
-        Arq.openRead(nomeArq);
-        resp = "";
-        while(Arq.hasNext()){
-            in = Arq.readLine();
-            //if(in.contains("Transmissão original<")){
-            if(in.contains("Transmiss") && in.contains("original<")){
-                in = Arq.readLine();
-                boolean aberto = false;
-                for(int i = 0;i < in.length();i++){
-                    if(in.charAt(i) == '<'){
-                        aberto = true;
-                    }else if(in.charAt(i) == '>'){
-                        aberto = false;
-                    }
-                    if(!aberto){
-                        resp += in.charAt(i);
-                    }
-                }
-                String aux = "";
-                String aux1[] = resp.split("&#160;");
-                String aux2 = "";
-                for(int l = 0;l < aux1.length;l++){
-                    if(l == 1){
-                        for(int k = 10;k < aux1[l].length();k++){
-                            aux += aux1[l].charAt(k);
-                        }
-                    }else{
-                    aux += aux1[l];
-                    }
-                }
-                for(int j = 0;j < aux.length()-1;j++){
-                    if(aux.charAt(j) != '<' && aux.charAt(j) != '>' && aux.charAt(j) != '(' && aux.charAt(j) != ')'){
-                        aux2 += resp.charAt(j);
-                    }
-                }
-                setTransmissaoOrigem(aux2);
-            }
-        }
-        Arq.close();
-
-        /*Arq.openRead(nomeArq);
-        resp = "";
-        while(Arq.hasNext()){
-            in = Arq.readLine();
-            //if(in.contains("N.º de temporadas<")){
-            if(in.contains(" de temporadas<")){
-                in = Arq.readLine();
-                boolean aberto = false;
-                for(int i = 0;i < in.length();i++){
-                    if(in.charAt(i) == '<'){
-                        aberto = true;
-                    }else if(in.charAt(i) == '>'){
-                        aberto = false;
-                    }
-                    if(!aberto){
-                        resp += in.charAt(i);
-                    }
-                }
-                String aux = "";
-                if(resp != ""){
-                    for(int j = 1;j < resp.length()-1;j++){
-                        if(resp.charAt(j) != '<' && resp.charAt(j) != '>'){
-                            aux += resp.charAt(j);
-                        }
-                    }
-                }else{
-                    aux = "0";
-                }
-                setNumTemp(Integer.parseInt(aux));
-            }
-        }
-        Arq.close();
-
-        Arq.openRead(nomeArq);
-        resp = "";
-        while(Arq.hasNext()){
-            in = Arq.readLine();
-            //if(in.contains("N.º de episódios<")){
-            if(in.contains(" de episódios<")){
-                in = Arq.readLine();
-                boolean aberto = false;
-                for(int i = 0;i < in.length();i++){
-                    if(in.charAt(i) == '<'){
-                        aberto = true;
-                    }else if(in.charAt(i) == '>'){
-                        aberto = false;
-                    }
-                    if(!aberto){
-                        resp += in.charAt(i);
-                    }
-                }
-                String aux = "";
-                if(resp != ""){
-                    for(int j = 1;j < resp.length()-1;j++){
-                        if(resp.charAt(j) != '<' && resp.charAt(j) != '>'){
-                            aux += resp.charAt(j);
-                        }
-                    }
-                }else{
-                    aux = "0";
-                }
-                setNumEp(Integer.parseInt(aux));
-            }
-        }
-        Arq.close();*/
+        return Integer.parseInt(resp);
     }
 
     //------------------------------------------------------------------------------
