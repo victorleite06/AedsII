@@ -4,7 +4,7 @@
 
 #define MAX_FIELD_SIZE 100
 
-typedef struct {
+typedef struct{
     char nome[MAX_FIELD_SIZE];
     char formato[MAX_FIELD_SIZE];
     char duracao[MAX_FIELD_SIZE];
@@ -16,21 +16,21 @@ typedef struct {
     int num_episodios;
 } Serie;
 
-char *remove_line_break(char *line) {
+char *remove_line_break(char *line){
     while (*line != '\r' && *line != '\n') line++;
     *line = '\0';
     return line;
 }
 
-char *freadline(char *line, int max_size, FILE *file) {
+char *freadline(char *line, int max_size, FILE *file){
     return remove_line_break(fgets(line, max_size, file));
 }
 
-char *readline(char *line, int max_size) {
+char *readline(char *line, int max_size){
     return freadline(line, max_size, stdin);
 }
 
-void imprimir(Serie *serie) {
+void imprimir(Serie *serie){
     printf("%s %s %s %s %s %s %s %d %d\n",
         serie->nome,
         serie->formato,
@@ -45,7 +45,7 @@ void imprimir(Serie *serie) {
 }
 
 // Retorna o tamanho em bytes de um arquivo.
-long tam_arquivo(FILE *file) {
+long tam_arquivo(FILE *file){
     fseek(file, 0L, SEEK_END);
     long size = ftell(file);
     rewind(file);
@@ -53,9 +53,9 @@ long tam_arquivo(FILE *file) {
 }
 
 // Retorna todo o conteúdo do arquivo numa string.
-char *ler_html(char filename[]) {
+char *ler_html(char filename[]){
     FILE *file = fopen(filename, "r");
-    if (!file) {
+    if(!file){
         fprintf(stderr, "Falha ao abrir arquivo %s\n", filename);
         exit(1);
     }
@@ -75,12 +75,12 @@ char *ler_html(char filename[]) {
  * 
  * @return Ponteiro para o texto extraído.
  */
-char *extrair_texto(char *html, char *texto) {
+char *extrair_texto(char *html, char *texto){
     char *start = texto;
     int contagem = 0;
-    while (*html != '\0') {
-        if (*html == '<') {
-            if (
+    while (*html != '\0'){
+        if (*html == '<'){
+            if(
                 (*(html + 1) == 'p') ||
                 (*(html + 1) == 'b' && *(html + 2) == 'r') ||
                 (*(html + 1) == '/' && *(html + 2) == 'h' && *(html + 3) == '1') ||
@@ -89,10 +89,10 @@ char *extrair_texto(char *html, char *texto) {
             ) break;
             else contagem++;
         }
-        else if (*html == '>') contagem--;
-        else if (contagem == 0 && *html != '"') {
-            if (*html == '&') html = strchr(html, ';');
-            else if (*html != '\r' && *html != '\n') *texto++ = *html;
+        else if(*html == '>') contagem--;
+        else if(contagem == 0 && *html != '"') {
+            if(*html == '&') html = strchr(html, ';');
+            else if(*html != '\r' && *html != '\n') *texto++ = *html;
         }
         html++;
     }
@@ -106,7 +106,7 @@ char *extrair_texto(char *html, char *texto) {
  * @param serie Struct Serie que vai receber os dados.
  * @param html String contendo todo o HTML do arquivo.
  */
-void ler_serie(Serie *serie, char *html) {
+void ler_serie(Serie *serie, char *html){
     char texto[MAX_FIELD_SIZE];
 
     char *ptr = strstr(html, "<h1");
@@ -156,11 +156,11 @@ void ler_serie(Serie *serie, char *html) {
 #define PREFIXO "/tmp/series/"
 // #define PREFIXO "../entrada e saida/tp02/series/"
 
-int isFim(char line[]) {
+int isFim(char line[]){
     return line[0] == 'F' && line[1] == 'I' && line[2] == 'M';
 }
 
-int main() {
+int main(){
     Serie serie;
     size_t tam_prefixo = strlen(PREFIXO);
     char line[MAX_LINE_SIZE];
