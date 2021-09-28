@@ -8,7 +8,7 @@ class BibliotecaSeverino{
     
     public static void main(String[] args){
         String g;
-        while((g = MyIO.readLine()) != null){
+        while((g = MyIO.readLine()) != null){ // Não consegui fazer o código parar por sozinho
             int n = Integer.parseInt(g);
             int array[] = new int[n];
             for(int i = 0;i < n;i++){
