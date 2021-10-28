@@ -177,7 +177,7 @@ class Array{
     //Construtor
     //------------------------------------------------------------------------------
     public Array(){
-        this(61);
+        this(100);
     }
     public Array(int tamanho){
         series = new Serie[tamanho];

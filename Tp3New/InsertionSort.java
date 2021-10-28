@@ -177,7 +177,7 @@ class Array{
     //Construtor
     //------------------------------------------------------------------------------
     public Array(){
-        this(61);
+        this(100);
     }
     public Array(int tamanho){
         series = new Serie[tamanho];
@@ -208,16 +208,17 @@ class Array{
         for(int i = 1;i < series.length;i++){
             Serie tmp = series[i];
             int j = i - 1;
-            for(;(j >= 0) && (naoEhMenor(i, j, false, 0));j--){
+            for(;(j >= 0) && (series[j].getIdiomaOrigem().compareTo(series[i].getIdiomaOrigem()) < 0);j--){
                 series[j + 1] = series[j];
                 mov++;
+                comp++;
             }
             series[j + 1] = tmp;
             mov++;
         }
     }
     //------------------------------------------------------------------------------
-    //swap, getMaior, naoEhMenor
+    //swap, getMaior
     //------------------------------------------------------------------------------
     private void swap(int i, int j){
         Serie tmp = series[i];
@@ -233,18 +234,6 @@ class Array{
             }
         }
         return posMaior;
-    }
-    private boolean naoEhMenor(int menor, int j, boolean ehMenor, int cont){
-       if(series[menor].getIdiomaOrigem().charAt(cont) == series[j].getIdiomaOrigem().charAt(cont)){
-            comp++;
-            cont++;    
-            naoEhMenor(menor, j, ehMenor, cont);
-       }else if(series[menor].getIdiomaOrigem().charAt(cont) > series[j].getIdiomaOrigem().charAt(cont)){
-           ehMenor = true;
-           comp++;
-       }
-
-        return ehMenor;
     }
     //------------------------------------------------------------------------------
     //Mostrar

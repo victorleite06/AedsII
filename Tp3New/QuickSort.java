@@ -177,7 +177,7 @@ class Array{
     //Construtor
     //------------------------------------------------------------------------------
     public Array(){
-        this(61);
+        this(100);
     }
     public Array(int tamanho){
         series = new Serie[tamanho];
@@ -212,8 +212,8 @@ class Array{
         int j = dir;
         int pivo = (dir + esq) / 2;
         while(i <= j){
-            while(iMenorPivo(i, pivo, false, 0)){ i++; }
-            while(jMaiorPivo(j, pivo, false, 0)){ j--; }
+            while(series[pivo].getPaisOrigem().compareTo(series[i].getPaisOrigem()) < 0){ i++; comp++; }
+            while(series[pivo].getPaisOrigem().compareTo(series[j].getPaisOrigem()) < 0){ j--; comp++; }
             if(i <= j){
                 swap(i, j);
                 i++;
@@ -224,7 +224,7 @@ class Array{
         if(i < dir){ sort(i, dir); }
     }
     //------------------------------------------------------------------------------
-    //swap, getMaior, iMenorPivo, jMaiorPivo
+    //swap, getMaior
     //------------------------------------------------------------------------------
     private void swap(int i, int j){
         Serie tmp = series[i];
@@ -241,30 +241,6 @@ class Array{
         }
         return posMaior;
     }
-    private boolean iMenorPivo(int i, int pivo, boolean ehMenor, int cont){
-       if(series[i].getPaisOrigem().charAt(cont) == series[pivo].getPaisOrigem().charAt(cont)){
-            comp++;
-            cont++;    
-            iMenorPivo(i, pivo, ehMenor, cont);
-       }else if(series[i].getPaisOrigem().charAt(cont) < series[pivo].getPaisOrigem().charAt(cont)){
-           ehMenor = true;
-           comp++;
-       }
-
-        return ehMenor;
-    }
-    private boolean jMaiorPivo(int j, int pivo, boolean ehMenor, int cont){
-        if(series[j].getPaisOrigem().charAt(cont) == series[pivo].getPaisOrigem().charAt(cont)){
-             comp++;
-             cont++;    
-             iMenorPivo(j, pivo, ehMenor, cont);
-        }else if(series[j].getPaisOrigem().charAt(cont) > series[pivo].getPaisOrigem().charAt(cont)){
-            ehMenor = true;
-            comp++;
-        }
- 
-         return ehMenor;
-     }
     //------------------------------------------------------------------------------
     //Mostrar
     //------------------------------------------------------------------------------

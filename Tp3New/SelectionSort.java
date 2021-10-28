@@ -172,16 +172,18 @@ class Array{
     private Serie series[];
     private int comp;
     private int mov;
+    private int tamanho;
 
     //------------------------------------------------------------------------------
     //Construtor
     //------------------------------------------------------------------------------
     public Array(){
-        this(61);
+        this(100);
     }
     public Array(int tamanho){
         series = new Serie[tamanho];
         comp = mov = 0;
+        this.tamanho = 0;
     }
     //------------------------------------------------------------------------------
     //Gets
@@ -198,6 +200,7 @@ class Array{
             series[cont] = new Serie();
             series[cont].ler(nomeArq);
             cont++;
+            tamanho++;
             nomeArq = MyIO.readLine();
         }
     }
@@ -205,18 +208,30 @@ class Array{
     //Sort
     //------------------------------------------------------------------------------
     public void sort(){
-        for(int i = 0;i < (series.length - 1);i++){
+        int cont = 0;
+        for(int i = 0;i < (tamanho - 1);i++){
             int menor = i;
-            for(int j = (i + 1);j < series.length;j++){
-                if(naoEhMenor(menor, j, false, 0)){
-                    menor = j;
+            for(int j = (i + 1);j < tamanho;j++){
+                if(series[j].getPaisOrigem() != series[menor].getPaisOrigem()){
+                    comp++;
+                    String aux = series[j].getPaisOrigem();
+                    String aux1 = series[menor].getPaisOrigem();
+                    if(!(aux.equals(aux1))){
+                        if(aux.length() == aux1.length()){
+                            while((aux.charAt(cont) == aux1.charAt(cont))){ cont++; comp++; }
+                            if(aux.charAt(cont) < aux1.charAt(cont)){
+                                menor = j;
+                                comp++;
+                            }
+                        }
+                    }
                 }
             }
             swap(menor, i);
         }
     }
     //------------------------------------------------------------------------------
-    //swap, getMaior, naoEhMenor
+    //swap, getMaior
     //------------------------------------------------------------------------------
     private void swap(int i, int j){
         Serie tmp = series[i];
@@ -226,30 +241,18 @@ class Array{
     }
     private int getMaior(){
         int posMaior = 0;
-        for(int i = 1;i < series.length;i++){
+        for(int i = 1;i < tamanho;i++){
             if(series[posMaior].getNumTemp() < series[i].getNumTemp()){
                 posMaior = i;
             }
         }
         return posMaior;
     }
-    private boolean naoEhMenor(int menor, int j, boolean ehMenor, int cont){
-       if(series[menor].getPaisOrigem().charAt(cont) == series[j].getPaisOrigem().charAt(cont)){
-            comp++;
-            cont++;    
-            naoEhMenor(menor, j, ehMenor, cont);
-       }else if(series[menor].getPaisOrigem().charAt(cont) > series[j].getPaisOrigem().charAt(cont)){
-           ehMenor = true;
-           comp++;
-       }
-
-        return ehMenor;
-    }
     //------------------------------------------------------------------------------
     //Mostrar
     //------------------------------------------------------------------------------
     public void mostrar(){
-        for(int i = 0;i < series.length;i++){
+        for(int i = 0;i < tamanho;i++){
             series[i].imprimir();
         }
     }
@@ -259,6 +262,7 @@ class Array{
 
 class SelectionSort{   
     public static void main(String[] args){
+        MyIO.setCharset("UTF-8");
         long inicio = System.currentTimeMillis();
         Array array = new Array();
         array.preencher();
