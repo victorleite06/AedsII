@@ -249,6 +249,7 @@ class Array{
 
 class InsertionSort{   
     public static void main(String[] args){
+        MyIO.setCharset("UTF-8");
         long inicio = System.currentTimeMillis();
         Array array = new Array();
         array.preencher();
