@@ -210,7 +210,7 @@ class Array{
     public void sort(){
         for(int i = (tamanho - 1); i > 0; i--){
 			for(int j = 0; j < i; j++){
-				if(comparacao((j+1), j)){
+				if(series[j].getNumTemp() > series[j + 1].getNumTemp()){
                     swap(j, (j+1));
 				}
 			}
@@ -233,25 +233,6 @@ class Array{
             }
         }
         return posMaior;
-    }
-    private boolean comparacao(int i, int j){
-        boolean comparacao = false;
-        if(series[i].getPaisOrigem() != series[j].getPaisOrigem()){
-            comp++;
-            String aux = series[i].getPaisOrigem();
-            String aux1 = series[j].getPaisOrigem();
-            if(!(aux.equals(aux1))){
-                if(aux.length() == aux1.length()){
-                    while((aux.charAt(cont) == aux1.charAt(cont))){ cont++; comp++; }
-                    if(aux.charAt(cont) < aux1.charAt(cont)){
-                        comparacao = true;
-                        mov++;
-                        comp++;
-                    }
-                }
-            }
-        }
-        return comparacao;
     }
     //------------------------------------------------------------------------------
     //Mostrar
