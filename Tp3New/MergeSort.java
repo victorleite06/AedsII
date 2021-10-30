@@ -172,6 +172,7 @@ class Array{
     private Serie series[];
     private int comp;
     private int mov;
+    private int tamanho;
 
     //------------------------------------------------------------------------------
     //Construtor
@@ -182,6 +183,7 @@ class Array{
     public Array(int tamanho){
         series = new Serie[tamanho];
         comp = mov = 0;
+        tamanho = 0;
     }
     //------------------------------------------------------------------------------
     //Gets
@@ -198,6 +200,7 @@ class Array{
             series[cont] = new Serie();
             series[cont].ler(nomeArq);
             cont++;
+            tamanho++;
             nomeArq = MyIO.readLine();
         }
     }
@@ -205,7 +208,7 @@ class Array{
     //Sort
     //------------------------------------------------------------------------------
     public void sort(){
-        merge(0, (series.length - 1));
+        merge(0, (tamanho - 1));
     }
     private void merge(int esq, int dir){
         if(esq < dir){
@@ -242,10 +245,11 @@ class Array{
         Serie tmp = series[i];
         series[i] = series[j];
         series[j] = tmp;
+        mov += 2;
     }
     private int getMaior(){
         int posMaior = 0;
-        for(int i = 1;i < series.length;i++){
+        for(int i = 1;i < tamanho;i++){
             if(series[posMaior].getNumTemp() < series[i].getNumTemp()){
                 posMaior = i;
             }
@@ -256,7 +260,7 @@ class Array{
     //Mostrar
     //------------------------------------------------------------------------------
     public void mostrar(){
-        for(int i = 0;i < series.length;i++){
+        for(int i = 0;i < tamanho;i++){
             series[i].imprimir();
         }
     }

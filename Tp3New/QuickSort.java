@@ -172,6 +172,7 @@ class Array{
     private Serie series[];
     private int comp;
     private int mov;
+    private int tamanho;
 
     //------------------------------------------------------------------------------
     //Construtor
@@ -182,6 +183,7 @@ class Array{
     public Array(int tamanho){
         series = new Serie[tamanho];
         comp = mov = 0;
+        tamanho = 0;
     }
     //------------------------------------------------------------------------------
     //Gets
@@ -198,6 +200,7 @@ class Array{
             series[cont] = new Serie();
             series[cont].ler(nomeArq);
             cont++;
+            tamanho++;
             nomeArq = MyIO.readLine();
         }
     }
@@ -205,15 +208,15 @@ class Array{
     //Sort
     //------------------------------------------------------------------------------
     public void sort(){
-        sort(0, (series.length - 1));
+        sort(0, (tamanho - 1));
     }
     private void sort(int esq, int dir){
         int i = esq;
         int j = dir;
         int pivo = (dir + esq) / 2;
         while(i <= j){
-            while(series[pivo].getPaisOrigem().compareTo(series[i].getPaisOrigem()) < 0){ i++; comp++; }
-            while(series[pivo].getPaisOrigem().compareTo(series[j].getPaisOrigem()) < 0){ j--; comp++; }
+            while(comparacao(pivo, i)){ i++; comp++; }
+            while(comparacao(pivo, j)){ j--; comp++; }
             if(i <= j){
                 swap(i, j);
                 i++;
@@ -224,7 +227,7 @@ class Array{
         if(i < dir){ sort(i, dir); }
     }
     //------------------------------------------------------------------------------
-    //swap, getMaior
+    //swap, getMaior, comparacao
     //------------------------------------------------------------------------------
     private void swap(int i, int j){
         Serie tmp = series[i];
@@ -234,18 +237,37 @@ class Array{
     }
     private int getMaior(){
         int posMaior = 0;
-        for(int i = 1;i < series.length;i++){
+        for(int i = 1;i < tamanho;i++){
             if(series[posMaior].getNumTemp() < series[i].getNumTemp()){
                 posMaior = i;
             }
         }
         return posMaior;
     }
+    private boolean comparacao(int i, int j){
+        boolean comparacao = false;
+        if(series[i].getPaisOrigem() != series[j].getPaisOrigem()){
+            comp++;
+            String aux = series[i].getPaisOrigem();
+            String aux1 = series[j].getPaisOrigem();
+            if(!(aux.equals(aux1))){
+                if(aux.length() == aux1.length()){
+                    while((aux.charAt(cont) == aux1.charAt(cont))){ cont++; comp++; }
+                    if(aux.charAt(cont) < aux1.charAt(cont)){
+                        comparacao = true;
+                        mov++;
+                        comp++;
+                    }
+                }
+            }
+        }
+        return comparacao;
+    }
     //------------------------------------------------------------------------------
     //Mostrar
     //------------------------------------------------------------------------------
     public void mostrar(){
-        for(int i = 0;i < series.length;i++){
+        for(int i = 0;i < tamanho;i++){
             series[i].imprimir();
         }
     }

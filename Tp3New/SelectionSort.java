@@ -212,26 +212,15 @@ class Array{
         for(int i = 0;i < (tamanho - 1);i++){
             int menor = i;
             for(int j = (i + 1);j < tamanho;j++){
-                if(series[j].getPaisOrigem() != series[menor].getPaisOrigem()){
-                    comp++;
-                    String aux = series[j].getPaisOrigem();
-                    String aux1 = series[menor].getPaisOrigem();
-                    if(!(aux.equals(aux1))){
-                        if(aux.length() == aux1.length()){
-                            while((aux.charAt(cont) == aux1.charAt(cont))){ cont++; comp++; }
-                            if(aux.charAt(cont) < aux1.charAt(cont)){
-                                menor = j;
-                                comp++;
-                            }
-                        }
-                    }
+                if(comparacao(j, menor)){
+                    menor = j;
                 }
             }
             swap(menor, i);
         }
     }
     //------------------------------------------------------------------------------
-    //swap, getMaior
+    //swap, getMaior, comparacao
     //------------------------------------------------------------------------------
     private void swap(int i, int j){
         Serie tmp = series[i];
@@ -248,6 +237,23 @@ class Array{
         }
         return posMaior;
     }
+    private boolean comparacao(int i, int j){
+        boolean comparacao = false;
+        if(series[i].getPaisOrigem() != series[j].getPaisOrigem()){
+            comp++;
+            String aux = series[i].getPaisOrigem();
+            String aux1 = series[j].getPaisOrigem();
+            if(!(aux.equals(aux1))){
+                if(aux.length() == aux1.length()){
+                    while((aux.charAt(cont) == aux1.charAt(cont))){ cont++; comp++; }
+                    if(aux.charAt(cont) < aux1.charAt(cont)){
+                        comparacao = true;
+                        comp++;
+                    }
+                }
+            }
+        }
+        return comparacao;
     //------------------------------------------------------------------------------
     //Mostrar
     //------------------------------------------------------------------------------

@@ -172,6 +172,7 @@ class Array{
     private Serie series[];
     private int comp;
     private int mov;
+    private int tamanho;
 
     //------------------------------------------------------------------------------
     //Construtor
@@ -182,6 +183,7 @@ class Array{
     public Array(int tamanho){
         series = new Serie[tamanho];
         comp = mov = 0;
+        tamanho = 0;
     }
     //------------------------------------------------------------------------------
     //Gets
@@ -198,6 +200,7 @@ class Array{
             series[cont] = new Serie();
             series[cont].ler(nomeArq);
             cont++;
+            tamanho++;
             nomeArq = MyIO.readLine();
         }
     }
@@ -206,17 +209,17 @@ class Array{
     //------------------------------------------------------------------------------
     public void sort(){
         int count[] = new int[series[getMaior()].getNumTemp() + 1];
-        int ordenado[] = new int[series.length];
+        int ordenado[] = new int[tamanho];
 
         for(int i = 0;i < count.length;count[i] = 0, i++);
 
-        for(int i = 0;i < series.length;count[series[i].getNumTemp()]++, i++, comp++);
+        for(int i = 0;i < tamanho;count[series[i].getNumTemp()]++, i++, comp++);
 
         for(int i = 1;i < count.length;count[i] += count[i-1], i++, comp++);
 
-        for(int i = (series.length - 1);i >= 0;ordenado[count[series[i].getNumTemp()]-1] = series[i].getNumTemp(), count[series[i].getNumTemp()]--, i--, mov++);
+        for(int i = (tamanho - 1);i >= 0;ordenado[count[series[i].getNumTemp()]-1] = series[i].getNumTemp(), count[series[i].getNumTemp()]--, i--, mov++);
 
-        for(int i = 0;i < series.length;i++, series[i].getNumTemp() = ordenado[i], mov++);     
+        for(int i = 0;i < tamanho;i++, series[i].getNumTemp() = ordenado[i], mov++);
     }
     //------------------------------------------------------------------------------
     //swap, getMaior
@@ -225,10 +228,11 @@ class Array{
         Serie tmp = series[i];
         series[i] = series[j];
         series[j] = tmp;
+        mov += 2;
     }
     private int getMaior(){
         int posMaior = 0;
-        for(int i = 1;i < series.length;i++){
+        for(int i = 1;i < tamanho;i++){
             if(series[posMaior].getNumTemp() < series[i].getNumTemp()){
                 posMaior = i;
             }
@@ -239,7 +243,7 @@ class Array{
     //Mostrar
     //------------------------------------------------------------------------------
     public void mostrar(){
-        for(int i = 0;i < series.length;i++){
+        for(int i = 0;i < tamanho;i++){
             series[i].imprimir();
         }
     }
@@ -248,7 +252,6 @@ class Array{
 
 
 class CountingSort{
-
     public static void main(String[] args){
         long inicio = System.currentTimeMillis();
         Array array = new Array();
