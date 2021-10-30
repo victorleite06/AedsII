@@ -183,7 +183,7 @@ class Array{
     public Array(int tamanho){
         series = new Serie[tamanho];
         comp = mov = 0;
-        tamanho = 0;
+        this.tamanho = 0;
     }
     //------------------------------------------------------------------------------
     //Gets

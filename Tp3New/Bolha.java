@@ -208,38 +208,16 @@ class Array{
     //Sort
     //------------------------------------------------------------------------------
     public void sort(){
-        merge(0, (tamanho - 1));
-    }
-    private void merge(int esq, int dir){
-        if(esq < dir){
-            int meio = (esq + dir) / 2;
-            merge(esq, meio);
-            merge(meio + 1, dir);
-            intercalar(esq, meio, dir);
-        }
-    }
-    private void intercalar(int esq, int meio, int dir){
-        int n1, n2, i, j, k;
-
-        n1 = meio - esq + 1;
-        n2 = dir - meio;
-
-        Serie a1[] = new Serie[n1 + 1];
-        Serie a2[] = new Serie[n2 + 1];
-
-        for(i = 0;i < n1;i++){ a1[i] = series[esq + i]; }
-        for(j = 0;j < n2;j++){ a2[j] = series[meio + j + 1]; }
-
-        //a1[i] = a2[j] = 0x7FFFFFFF;
-
-        for(i = j = 0, k = esq;k <= dir;k++){
-            series[k] = (a1[i].getNumEp() <= a2[j].getNumEp()) ? a1[i++] : a2[j++];
-            mov++;
-            comp++;
-        }
+        for(int i = (tamanho - 1); i > 0; i--){
+			for(int j = 0; j < i; j++){
+				if(comparacao((j+1), j)){
+                    swap(j, (j+1));
+				}
+			}
+		}
     }
     //------------------------------------------------------------------------------
-    //swap, getMaior
+    //swap, getMaior, comparacao
     //------------------------------------------------------------------------------
     private void swap(int i, int j){
         Serie tmp = series[i];
@@ -256,6 +234,25 @@ class Array{
         }
         return posMaior;
     }
+    private boolean comparacao(int i, int j){
+        boolean comparacao = false;
+        if(series[i].getPaisOrigem() != series[j].getPaisOrigem()){
+            comp++;
+            String aux = series[i].getPaisOrigem();
+            String aux1 = series[j].getPaisOrigem();
+            if(!(aux.equals(aux1))){
+                if(aux.length() == aux1.length()){
+                    while((aux.charAt(cont) == aux1.charAt(cont))){ cont++; comp++; }
+                    if(aux.charAt(cont) < aux1.charAt(cont)){
+                        comparacao = true;
+                        mov++;
+                        comp++;
+                    }
+                }
+            }
+        }
+        return comparacao;
+    }
     //------------------------------------------------------------------------------
     //Mostrar
     //------------------------------------------------------------------------------
@@ -268,7 +265,7 @@ class Array{
 }
 
 
-class MergeSort{
+class Bolha{
     
     public static void main(String[] args){
         long inicio = System.currentTimeMillis();
@@ -281,6 +278,6 @@ class MergeSort{
         int comp = array.getComp();
         int mov = array.getMov();
         Arq arquivo = new Arq();
-        arquivo.openWriteClose("656016_mergesort.txt", "656016\t" + comp + "\t" + mov + "\t" + tempo);
+        arquivo.openWriteClose("656016_bolha.txt", "656016\t" + comp + "\t" + mov + "\t" + tempo);
     }
 }
