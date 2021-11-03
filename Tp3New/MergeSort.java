@@ -80,8 +80,8 @@ class Serie{
     }
     
     public void ler(String Arqu){
-        //String nomeArq = "/tmp/series/" + Arqu; // Verde
-        String nomeArq = Arqu; // Teste
+        String nomeArq = "/tmp/series/" + Arqu; // Verde
+        //String nomeArq = Arqu; // Teste
 
         try{
             FileReader arq = new FileReader(nomeArq);

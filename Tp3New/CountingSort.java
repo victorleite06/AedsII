@@ -219,7 +219,7 @@ class Array{
 
         for(int i = (tamanho - 1);i >= 0;ordenado[count[series[i].getNumTemp()]-1] = series[i].getNumTemp(), count[series[i].getNumTemp()]--, i--, mov++);
 
-        for(int i = 0;i < tamanho;i++, series[i].getNumTemp() = ordenado[i], mov++);
+        for(int i = 0;i < tamanho;i++){ series[i] = ordenado[i]; mov++;}
     }
     //------------------------------------------------------------------------------
     //swap, getMaior

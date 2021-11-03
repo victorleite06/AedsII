@@ -80,8 +80,8 @@ class Serie{
     }
     
     public void ler(String Arqu){
-        //String nomeArq = "/tmp/series/" + Arqu; // Verde
-        String nomeArq = Arqu; // Teste
+        String nomeArq = "/tmp/series/" + Arqu; // Verde
+        //String nomeArq = Arqu; // Teste
 
         try{
             FileReader arq = new FileReader(nomeArq);
@@ -257,6 +257,7 @@ class Array{
         mov += 2;
     }
     private boolean comparacao(int i, int j){
+        int cont = 0;
         boolean comparacao = false;
         if(series[i].getFormato() != series[j].getFormato()){
             comp++;

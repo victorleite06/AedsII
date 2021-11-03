@@ -80,8 +80,8 @@ class Serie{
     }
     
     public void ler(String Arqu){
-        //String nomeArq = "/tmp/series/" + Arqu; // Verde
-        String nomeArq = Arqu; // Teste
+        String nomeArq = "/tmp/series/" + Arqu; // Verde
+        //String nomeArq = Arqu; // Teste
 
         try{
             FileReader arq = new FileReader(nomeArq);
@@ -238,6 +238,7 @@ class Array{
         return posMaior;
     }
     private boolean comparacao(int i, int j){
+        int cont = 0;
         boolean comparacao = false;
         if(series[i].getPaisOrigem() != series[j].getPaisOrigem()){
             comp++;
@@ -254,6 +255,7 @@ class Array{
             }
         }
         return comparacao;
+    }
     //------------------------------------------------------------------------------
     //Mostrar
     //------------------------------------------------------------------------------
