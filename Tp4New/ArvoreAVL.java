@@ -400,20 +400,6 @@ class ArvoreAVL{
         Array array = new Array();
         Arvore arvore = new Arvore();
         arvore = array.preencher();
-        int n = MyIO.readInt();
-        for(int i = 0;i < n;i++){
-            String in = MyIO.readLine();
-            String aux[] = in.split(" ");
-            if(aux[0] == "I"){
-                Serie s = new Serie();
-                s.ler(aux[1]);
-                arvore.inserir(s);
-            }else if(aux[0] == "R"){
-                Serie s = new Serie();
-                s.ler(aux[1]);
-                arvore.remover(s);
-            }
-        }
         String pesq = MyIO.readLine();
         while(pesq.equals("FIM")){
             arvore.pesquisar(pesq);
