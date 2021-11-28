@@ -80,8 +80,8 @@ class Serie{
     }
     
     public void ler(String Arqu){
-        //String nomeArq = "/tmp/series/" + Arqu; // Verde
-        String nomeArq = Arqu; // Teste
+        String nomeArq = "/tmp/series/" + Arqu; // Verde
+        //String nomeArq = Arqu; // Teste
 
         try{
             FileReader arq = new FileReader(nomeArq);
@@ -331,11 +331,11 @@ class Arvore{
     //Pesquisar
     //------------------------------------------------------------------------------
     public void pesquisar(String nome){
-        MyIO.println("raiz ");
+        MyIO.print("raiz ");
         if(pesquisar(nome, raiz)){
-            MyIO.print("SIM");
+            MyIO.print("SIM\n");
         }else{
-            MyIO.print("NAO");
+            MyIO.print("NAO\n");
         }
     }
     private boolean pesquisar(String nome, No i){
@@ -426,7 +426,7 @@ class ArvoreAlvinegra{
         Arvore arvore = new Arvore();
         arvore = array.preencher();
         String pesq = MyIO.readLine();
-        while(pesq.equals("FIM")){
+        while(!(pesq.equals("FIM"))){
             arvore.pesquisar(pesq);
             pesq = MyIO.readLine();
         }
