@@ -80,8 +80,8 @@ class Serie{
     }
     
     public void ler(String Arqu){
-        //String nomeArq = "/tmp/series/" + Arqu; // Verde
-        String nomeArq = Arqu; // Teste
+        String nomeArq = "/tmp/series/" + Arqu; // Verde
+        //String nomeArq = Arqu; // Teste
 
         try{
             FileReader arq = new FileReader(nomeArq);
@@ -269,16 +269,16 @@ class Arvore{
     //------------------------------------------------------------------------------
     //Remover
     //------------------------------------------------------------------------------
-    public void remover(Serie serie)throws Exception{
+    public void remover(String serie)throws Exception{
         raiz = remover(serie, raiz);
     }
-    private No remover(Serie serie, No i)throws Exception{
+    private No remover(String serie, No i)throws Exception{
         if(i == null){
             throw new Exception("Erro!");
-        }else if(serie.getNome().compareTo(i.serie.getNome()) < 0){
+        }else if(serie.compareTo(i.serie.getNome()) < 0){
             comp++;
             i.esq = remover(serie, i.esq);
-        }else if(serie.getNome().compareTo(i.serie.getNome()) > 0){
+        }else if(serie.compareTo(i.serie.getNome()) > 0){
             comp++;
             i.dir = remover(serie, i.dir);
         }else if(i.dir == null){
@@ -294,11 +294,11 @@ class Arvore{
     //Pesquisar
     //------------------------------------------------------------------------------
     public void pesquisar(String nome){
-        MyIO.println("raiz ");
+        MyIO.print(" raiz ");
         if(pesquisar(nome, raiz)){
-            MyIO.print("SIM");
+            MyIO.print("SIM\n");
         }else{
-            MyIO.print("NAO");
+            MyIO.print("NAO\n");
         }
     }
     private boolean pesquisar(String nome, No i){
@@ -349,13 +349,11 @@ class ArvoreBinaria{
                 s.ler(aux[1]);
                 arvore.inserir(s);
             }else if(aux[0] == "R"){
-                Serie s = new Serie();
-                s.ler(aux[1]);
-                arvore.remover(s);
+                arvore.remover(aux[1]);
             }
         }
         String pesq = MyIO.readLine();
-        while(pesq.equals("FIM")){
+        while(!(pesq.equals("FIM"))){
             arvore.pesquisar(pesq);
             pesq = MyIO.readLine();
         }
