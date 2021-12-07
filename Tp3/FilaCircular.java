@@ -1,439 +1,275 @@
-import java.io.BufferedReader;
+import java.io.*;
 import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
-class Musica{
+class Serie{
+    private String nome;
+    private String formato;
+    private String duracao;
+    private String paisOrigem;
+    private String idiomaOrigem;
+    private String emissoraTV;
+    private String trasmissaoOriginal;
+    private int numTemp;
+    private int numEp;
+    //------------------------------------------------------------------------------
+    //Construtores
+    public Serie(){
+        this.nome = "";
+        this.formato = "";
+        this.duracao = "";
+        this.paisOrigem = "";
+        this.idiomaOrigem = "";
+        this.emissoraTV = "";
+        this.trasmissaoOriginal = "";
+        this.numTemp = 0;
+        this.numEp = 0;
+    }
+    public Serie(String nome, String formato, String duracao, String paisOrigem, String idiomaOrigem, String emissoraTV, String transmissaoOriginal, int numTemp, int numEp){
+        this.nome = nome;
+        this.formato = formato;
+        this.duracao = duracao;
+        this.paisOrigem = paisOrigem;
+        this.idiomaOrigem = idiomaOrigem;
+        this.emissoraTV = emissoraTV;
+        this.trasmissaoOriginal = transmissaoOriginal;
+        this.numTemp = numTemp;
+        this.numEp = numEp;
+    }
+    //------------------------------------------------------------------------------
+    //Sets/Gets
+    public void setNome(String nome){ this.nome = nome; }
+    public String getNome(){ return this.nome; }
 
-	private String nome;
-	private String id; // 8
-	private String key; // 10
-	private String artists; // 3
-	private Date realease_date; // 16
-	private double acousticness; // 2
-	private double danceability; // 4
-	private double energy; // 6
-	private int duration_ms; // 5
-	private double instrumentalness; // 9
-	private double valence; // 0
-	private int popularity; // 15
-	private float tempo; // 18
-	private double liveness; // 11
-	private double loudness; // 12
-	private double speechiness; // 17
-	private int year; // 1
-    //-------------------------------------------------------------
-	//Construtores
-	//-------------------------------------------------------------
-	public Musica(){
-		this.id = ""; // 8
-        this.nome = ""; // 14
-		this.key = ""; // 10
-	}
-	public Musica(String[] values)throws ParseException{
-		this.id = values[8]; // 8
-		this.nome = values[14]; // 14
-		this.key = values[10]; // 10
-		this.acousticness = Double.parseDouble(values[2]); // 2
-		this.danceability = Double.parseDouble(values[4]); // 4
-		this.energy = Double.parseDouble(values[6]); // 6
-		this.duration_ms = Integer.parseInt(values[5]); // 5
-		this.instrumentalness = Double.parseDouble(values[9]); // 9
-		this.valence = Double.parseDouble(values[0]); // 0
-		this.popularity = Integer.parseInt(values[15]); // 15
-		this.tempo = Float.parseFloat(values[18]); // 18
-		this.liveness = Double.parseDouble(values[11]); // 11
-		this.loudness = Double.parseDouble(values[12]); // 12
-		this.speechiness = Double.parseDouble(values[17]); // 17
-		this.year = Integer.parseInt(values[1]); // 1
+    public void setFormato(String formato){ this.formato = formato; }
+    public String getFormato(){ return this.formato; }
+    
+    public void setDuracao(String duracao){ this.duracao = duracao; }
+    public String getDuracao(){ return this.duracao; }
+    
+    public void setPaisOrigem(String paisOrigem){ this.paisOrigem = paisOrigem; }
+    public String getPaisOrigem(){ return this.paisOrigem; }
+    
+    public void setIdiomaOrigem(String idiomaOrigem){ this.idiomaOrigem = idiomaOrigem; }
+    public String getIdiomaOrigem(){ return this.idiomaOrigem; }
+    
+    public void setEmissoraTV(String emissoraTV){ this.emissoraTV = emissoraTV; }
+    public String getEmissoraTV(){ return this.emissoraTV; }
+    
+    public void setTransmissaoOrigem(String transmissaoOriginal){ this.trasmissaoOriginal = transmissaoOriginal; }
+    public String getTransmissaoOriginal(){ return this.trasmissaoOriginal; }
+    
+    public void setNumTemp(int numTemp){ this.numTemp = numTemp; }
+    public int getNumTemp(){ return this.numTemp; }
+    
+    public void setNumEp(int numEp){ this.numEp = numEp; }
+    public int getNumEp(){ return this.numEp; }
+    //------------------------------------------------------------------------------
+    //Clone/Ler
+    public Serie clone(){
+        Serie novo = new Serie();
+        novo.nome = this.nome;
+        novo.formato = this.formato;
+        novo.duracao = this.duracao;
+        novo.paisOrigem = this.paisOrigem;
+        novo.idiomaOrigem = this.idiomaOrigem;
+        novo.emissoraTV = this.emissoraTV;
+        novo.trasmissaoOriginal = this.trasmissaoOriginal;
+        novo.numTemp = this.numTemp;
+        novo.numEp = this.numEp;
+        return novo;
+    }
+    
+    public void ler(String Arqu){
+        //String nomeArq = "/tmp/series/" + Arqu; // Verde
+        String nomeArq = Arqu; // Teste
 
-		String artistsString = "";
-		int i = 0;
-		while (i < values[3].length()) {
-			if (!(values[3].charAt(i) == 39 && (values[3].charAt(i - 1) == 91 || 
-					values[3].charAt(i + 1) == 93 || values[3].charAt(i + 1) == 44 || 
-					values[3].charAt(i - 2) == 44))) {
-				artistsString += values[3].charAt(i);
-			}
-			i++;
-		}
-		artists = artistsString; // 3 ;
-		
-		SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
-		if (values[16].length() == 4) {
-			realease_date = formato.parse(values[16] + "-01-01");
-		} else if (values[16].length() == 7) {
-			realease_date = formato.parse(values[16] + "-01");
-		} else {
-			realease_date = formato.parse(values[16]);
-		}
-	}
-    //-------------------------------------------------------------
-	//Sets, Gets
-	//-------------------------------------------------------------
-	public String getId(){
-		return id;
-	}
+        try{
+            FileReader arq = new FileReader(nomeArq);
+            BufferedReader ler = new BufferedReader(arq);
 
-	public void setId(String id){
-		this.id = id;
-	}
+            this.nome = procurarNome(Arqu);
 
-	public String getNome(){
-		return nome;
-	}
+            while(!(ler.readLine().contains("Formato")));
+            this.formato = removerTags(ler.readLine());
 
-	public void setName(String nome){
-		this.nome = nome;
-	}
+            while(!(ler.readLine().contains("Duração")));
+            this.duracao = removerTags(ler.readLine());
 
-	public String getKey(){
-		return key;
-	}
+            while(!(ler.readLine().contains("País de origem")));
+            this.paisOrigem = removerTags(ler.readLine());
 
-	public void setKey(String key){
-		this.key = key;
-	}
+            while(!(ler.readLine().contains("Idioma original")));
+            this.idiomaOrigem = removerTags(ler.readLine());
 
-	public String getArtists(){
-		return artists;
-	}
+            while(!(ler.readLine().contains("Emissora de televisão")));
+            this.emissoraTV = removerTags(ler.readLine());
 
-	public void setArtists(String artists){
-		this.artists = artists;
-	}
+            while(!(ler.readLine().contains("Transmissão original")));
+            this.trasmissaoOriginal = removerTags(ler.readLine());
 
-	public Date getRealease(){
-		return realease_date;
-	}
+            while(!(ler.readLine().contains("N.º de temporadas")));
+            this.numTemp = retornarInt(removerTags(ler.readLine()));
 
-	public void setRealease(Date realease_date){
-		this.realease_date = realease_date;
-	}
+            while(!(ler.readLine().contains("N.º de episódios")));
+            this.numEp = retornarInt(removerTags(ler.readLine()));
 
-	public double getAcousticness(){
-		return acousticness;
-	}
+            ler.close();
+        }catch(FileNotFoundException e){
+            System.out.println("Erro em abrir file " + nomeArq);
+        }catch(IOException e){
+            System.out.println("Erro em ler file" + nomeArq);
+        }
+    }
 
-	public void setAcousticness(double acousticness){
-		this.acousticness = acousticness;
-	}
+    private String procurarNome(String Arqu){
+        String nome = "";
+        for(int i = 0;i < Arqu.length();i++){
+            if(Arqu.charAt(i) == '_')
+                nome += ' ';
+            else
+                nome += Arqu.charAt(i);
+        }
+        return nome.substring(0, nome.length()-5);
+    }
+    private String removerTags(String in){
+        String resp = "";
+        for(int i = 0;i < in.length();i++){
+            if(in.charAt(i) == '<'){
+                i++;
+                while(in.charAt(i) != '>')
+                    i++;
+            }else if(in.charAt(i) == '&'){
+                i++;
+                while(in.charAt(i) != ';')
+                    i++;
+            }else{
+                resp += in.charAt(i);
+            }
+        }
+        return resp;
+    }
+    private int retornarInt(String in){
+        String resp = "";
+        for(int i = 0;i < in.length();i++){
+            if(in.charAt(i) >= '0' && in.charAt(i) <= '9'){
+                resp += in.charAt(i);
+            }else{
+                i = in.length();
+            }
+        }
+        return Integer.parseInt(resp);
+    }
 
-	public double getDanceability(){
-		return danceability;
-	}
-
-	public void setDanceability(double danceability){
-		this.danceability = danceability;
-	}
-
-	public double getEnergy(){
-		return energy;
-	}
-
-	public void setEnergy(double energy){
-		this.energy = energy;
-	}
-
-	public int getDuration(){
-		return duration_ms;
-	}
-
-	public void setDuration(int duration_ms){
-		this.duration_ms = duration_ms;
-	}
-
-	public double getInstrumentalness(){
-		return instrumentalness;
-	}
-
-	public void setInstrumentalness(double instrumentalness){
-		this.instrumentalness = instrumentalness;
-	}
-
-	public double getValence(){
-		return valence;
-	}
-
-	public void setValence(double valence){
-		this.valence = valence;
-	}
-
-	public int getPopularity(){
-		return popularity;
-	}
-
-	public void setPopularity(int popularity){
-		this.popularity = popularity;
-	}
-
-	public float getTempo(){
-		return tempo;
-	}
-
-	public void setTempo(float tempo){
-		this.tempo = tempo;
-	}
-
-	public double getLiveness(){
-		return liveness;
-	}
-
-	public void setLiveness(double liveness){
-		this.liveness = liveness;
-	}
-
-	public double getLoudness(){
-		return loudness;
-	}
-
-	public void setLoudness(double loudness){
-		this.loudness = loudness;
-	}
-
-	public double getSpeechiness(){
-		return speechiness;
-	}
-
-	public void setSpeechiness(double speechiness){
-		this.speechiness = speechiness;
-	}
-
-	public int getYear(){
-		return year;
-	}
-
-	public void setYear(int year){
-		this.year = year;
-	}
-    //-------------------------------------------------------------
-	//Clone
-	//-------------------------------------------------------------
-	public Musica clone(){
-		Musica novo = new Musica();
-		novo.nome = this.nome;
-		novo.id = this.id;
-		novo.key = this.key;
-		novo.artists = this.artists;
-		novo.realease_date = this.realease_date;
-		novo.acousticness = this.acousticness;
-		novo.danceability = this.danceability;
-		novo.energy = this.energy;
-		novo.duration_ms = this.duration_ms;
-		novo.instrumentalness = this.instrumentalness;
-		novo.valence = this.valence;
-		novo.popularity = this.popularity;
-		novo.tempo = this.tempo;
-		novo.liveness = this.liveness;
-		novo.loudness = this.loudness;
-		novo.speechiness = this.speechiness;
-		novo.year = this.year;
-		return novo;
-	}
-    //-------------------------------------------------------------
-	//Imprimir
-	//-------------------------------------------------------------
-		public void imprimir(){
-		System.out.print(this.toString());
-	}
-    //-------------------------------------------------------------
-	//toString()
-	//-------------------------------------------------------------	
-	public String toString(){
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		return id + " ## " + artists.toString() + " ## " + nome + " ## " + sdf.format(realease_date) + " ## " + acousticness
-				+ " ## " + danceability + " ## " + instrumentalness + " ## " + liveness + " ## " + loudness + " ## "
-				+ speechiness + " ## " + energy + " ## " + duration_ms;
-	}
-    //-------------------------------------------------------------	
+    //------------------------------------------------------------------------------
+    //Imprimir
+    public void imprimir(){
+        MyIO.print(nome + " " + formato + " " + duracao + " " + paisOrigem + " " + idiomaOrigem + " " + emissoraTV + " " + trasmissaoOriginal + " " + numTemp + " " + numEp + "\n");
+    }
+    //------------------------------------------------------------------------------
 }
 
-class FilaCircularLinear{
+class Celula{
+    public Serie serie;
+    public Celula prox;
+    //------------------------------------------------------------------------------
+    //Construtor
+    //------------------------------------------------------------------------------
+    public Celula(){
+        this(new Serie());
+    }
+    public Celula(Serie s){
+        this.serie = s.clone();
+        this.prox = null;
+    }
+    //------------------------------------------------------------------------------
+}
 
-	private Musica musicas[];
-	private int primeiro, ultimo, cont;
+class Fila{
+    private Celula inicio, fim;
 
-	//-------------------------------------------------------------
-	//Construtores
-	//-------------------------------------------------------------
-	public FilaCircularLinear(){
-		this(6);
-	}
-	public FilaCircularLinear(int tamanho){
-		musicas = new Musica[tamanho];
-		primeiro = ultimo = cont = 0;
-	}
-	//-------------------------------------------------------------
-	//Inserir
-	//-------------------------------------------------------------
-	public void inserir(Musica m)throws Exception{
-		if(((ultimo + 1) % musicas.length) == primeiro){
-			remover();
-		}
-
-        musicas[ultimo] = m.clone();
-		ultimo = (ultimo + 1) % musicas.length;
-        cont++;
-
-        float soma = 0;
-        float media;
-        for(int i = primeiro;i != ultimo;i = ((i + 1) % musicas.length)){
-            soma += musicas[i].getDuration();
+    //------------------------------------------------------------------------------
+    //Construtor
+    //------------------------------------------------------------------------------
+    public Fila(){
+        this(5);
+    }
+    public Fila(int tamanho){
+        inicio = new Celula();
+        fim = inicio;
+        for(int i = 0;i < tamanho;i++, fim = fim.prox){
+            fim.prox = new Celula();
         }
-        media = soma/cont;
-        int round = Math.round(media);
-        MyIO.println(round);
-	}
-	//-------------------------------------------------------------
-	//Remover
-	//-------------------------------------------------------------
-	public Musica remover()throws Exception{
-		if(primeiro == ultimo)
-			throw new Exception("Erro!");
-		
-		Musica m = musicas[primeiro];
-		primeiro = (primeiro + 1) % musicas.length;
+        fim.prox = inicio;
+    }
+    //------------------------------------------------------------------------------
+    //Inserir
+    //------------------------------------------------------------------------------
+    public void inserir(Serie s)throws Exception{
+        if(fim.prox == inicio){
+            throw new Exception("Erro!");
+        }
+        fim.serie = s;
+        fim = fim.prox;
 
-        cont--;
-		return m;
-	}
-	//-------------------------------------------------------------
-	//Mostrar
-	//-------------------------------------------------------------
-	public void mostrar(){
-		int i = primeiro;
-        while(i != ultimo){
-			MyIO.print("[" + i + "] ");
-			musicas[i].imprimir();
-        	MyIO.print("\n");
-            i = (i + 1) % musicas.length;
-		}
-	}
-	//-------------------------------------------------------------
+        Celula tmp = inicio;
+        int soma = 0;
+        int cont = 0;
+        for(;tmp != fim;tmp = tmp.prox, cont++){
+            soma += tmp.serie.getNumTemp();
+        }
+        int media = soma / cont;
+
+        MyIO.println(media);
+    }
+    //------------------------------------------------------------------------------
+    //Remover
+    //------------------------------------------------------------------------------
+    public void remover()throws Exception{
+        if(inicio == fim){
+            throw new Exception("Erro!");
+        }
+        inicio = inicio.prox;
+    }
+    //------------------------------------------------------------------------------
+    //Mostrar
+    //------------------------------------------------------------------------------
+    public void mostrar(){
+        Celula tmp = inicio;
+        for(;tmp != fim;tmp = tmp.prox){
+            tmp.serie.imprimir();
+        }
+    }
+    //------------------------------------------------------------------------------
 }
 
 class FilaCircular{
+    
+    public static void main(String[] args)throws Exception{
+        Serie series[] = new Serie[61];
+        int cont = 0;
+        String nomeArq = MyIO.readLine();
+        Fila fila = new Fila();
+        while(!(nomeArq.contains("FIM"))){
+            series[cont] = new Serie();
+            series[cont].ler(nomeArq);
+            fila.inserir(series[cont]);
+            cont++;
+            nomeArq = MyIO.readLine();
+        }
 
-	final static BufferedReader nt = new BufferedReader(new InputStreamReader(System.in));
+        int n = MyIO.readInt();
 
-    public static Musica cadastra(String dadosMusica) throws ParseException {
-		int tamanhoString = 19;
-        String campos[] = new String[tamanhoString];
-		int j = 0;
-		String temp = "";
-		for (int i = 0; i < tamanhoString; i++) {
-			temp = "";
-			while (j < dadosMusica.length() && ((dadosMusica.charAt(j) != ',') || !(dadosMusica.charAt(j) == ',' && dadosMusica.charAt(j + 1) != ' '))) {
-				if (dadosMusica.charAt(j) != '"')
-					temp += dadosMusica.charAt(j);
-				j++;
-			}
-			j++;
-			campos[i] = temp;
-		}
-		Musica musica = new Musica(campos);
-		
-		return musica;
-	}
-
-	public static Musica[] montarClasse(int quantidade, String ids[], String totalMusicList[]) throws ParseException {
-		Musica m[] = new Musica[quantidade];
-		for (int i = 0; i < quantidade; i++) {
-			for (int j = 0; j < totalMusicList.length; j++) {
-				if (totalMusicList[j].contains(ids[i])) {
-					String dadosMusic = totalMusicList[j];
-					m[i] = cadastra(dadosMusic);
-					j = totalMusicList.length;
-				}
-			}
-
-		}
-		return m;
-	}
-
-	public static int entradaPadrao(String ids[]) throws IOException {
-		int i = 0;
-
-		String linha = nt.readLine();
-		while (!(linha.contains("FIM"))) {
-			ids[i] = linha;
-			i++;
-			linha = nt.readLine();
-		}
-		return i;
-	}
-
-	public static String[] ler() throws Exception {
-		final int TOTAL_MUSIC_NUMBER = 170625;
-		String totalMusicList[] = new String[TOTAL_MUSIC_NUMBER];
-		FileReader arquivo = new FileReader("data.csv"); // Teste interno
-		//FileReader arquivo = new FileReader("/tmp/data.csv"); // Mandar para o VERDE
-		BufferedReader ler = new BufferedReader(arquivo);
-		String linha = ler.readLine();
-		linha = ler.readLine();
-		int i = 0;
-		while (linha != null) {
-			totalMusicList[i] = linha;
-			linha = ler.readLine();
-			i++;
-		}
-		arquivo.close();
-		return totalMusicList;
-	}
-
-	public static boolean isInserir(char c){
-		return c == 'I';
-	}
-	public static boolean isRemover(char c){
-		return c == 'R';
-	}
-
-	public static void main(String args[]) throws Exception {
-
-		String ids[] = new String[500];
-		int playlistTam = entradaPadrao(ids);
-
-		String totalMusicList[] = ler();
-		Musica musicas[] = montarClasse(playlistTam, ids, totalMusicList);
-
-		FilaCircularLinear fila = new FilaCircularLinear();
-
-		for(int i = 0;i < musicas.length;i++){
-			fila.inserir(musicas[i]);
-		}
-
-		String x = nt.readLine();
-		int n = Integer.parseInt(x);
-
-		for(int i = 0;i < n;i++){
-			String in = nt.readLine();
-			int pos = 0;
-			if(isInserir(in.charAt(0))){
-                //---------------------------------------
-				//Separar Id do Inserir
-                //---------------------------------------
-                String id = "";
-                for(int h = 2;h < in.length();h++){
-                    id += in.charAt(h);
-                }
-                //---------------------------------------
-
-				for(int j = 0;j < totalMusicList.length;j++){
-					if(totalMusicList[j].contains(id)){
-						pos = j;
-						j = totalMusicList.length;
-					}
-				}
-				Musica m = cadastra(totalMusicList[pos]);
-				fila.inserir(m);
-			}
-			if(isRemover(in.charAt(0))){
-				Musica m = fila.remover();
-				MyIO.println("(R) " + m.getNome());
-			}
-		}
-	}
+        for(int i = 0;i < n;i++){
+            String in = MyIO.readLine();
+            if(in.charAt(0) == 'I'){
+                String aux[] = in.split(" ");
+                Serie s = new Serie();
+                s.ler(aux[1]);
+                fila.inserir(s);
+            }
+            if(in.charAt(0) == 'R'){
+                fila.remover();
+            }
+        }
+    }
 }
